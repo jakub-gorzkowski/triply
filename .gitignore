@@ -1,3 +1,4 @@
 ### Data access ###
 .database/Dockerfile
 .triply/src/main/resources/application.yml
+docker-compose.yml
