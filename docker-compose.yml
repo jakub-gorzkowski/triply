@@ -1,0 +1,47 @@
+name: triply
+services:
+  database:
+    container_name: database
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 5454:5432
+    networks:
+      - application-network
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  backend:
+    container_name: backend
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/${POSTGRES_DB}
+    ports:
+      - 8080:8080
+    networks:
+      - application-network
+    depends_on:
+      - database
+
+  frontend:
+    container_name: frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    depends_on:
+      - backend
+    stdin_open: true
+
+networks:
+  application-network:
+    driver: bridge
+
+volumes:
+  pg-data:
