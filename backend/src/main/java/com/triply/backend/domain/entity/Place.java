@@ -1,0 +1,46 @@
+package com.triply.backend.domain.entity;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "places")
+public class Place {
+
+    @Id
+    private Long id;
+
+    private String name;
+
+    private String address;
+
+    private String description;
+
+    @JsonProperty(value = "image_url")
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @OneToMany(mappedBy = "place")
+    private Set<Review> reviewSet = new HashSet<>();
+
+    @ManyToMany(mappedBy = "placeSet")
+    private Set<Trip> tripSet;
+}
