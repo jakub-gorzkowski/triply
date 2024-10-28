@@ -1,6 +1,6 @@
 package com.triply.backend.security.service;
 
-import com.triply.backend.security.enumeration.Role;
+import com.triply.backend.domain.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -13,7 +13,9 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -59,9 +61,11 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public String generateToken(UserDetails userDetails, Role role) {
+    public String generateToken(UserDetails userDetails, Set<Role> roles) {
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("role", role.name());
+        extraClaims.put("roles", roles.stream()
+                .map(Role::getName)
+                .collect(Collectors.toList()));
         return generateToken(extraClaims, userDetails);
     }
 
