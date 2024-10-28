@@ -1,5 +1,6 @@
 package com.triply.backend.security.service;
 
+import com.triply.backend.security.enumeration.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -59,8 +60,10 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(UserDetails userDetails, Role role) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", role.name());
+        return generateToken(extraClaims, userDetails);
     }
 
     public String generateToken(
