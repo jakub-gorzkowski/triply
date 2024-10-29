@@ -1,6 +1,6 @@
-package com.triply.backend.service;
+package com.triply.backend.service.authentication;
 
-import com.triply.backend.domain.dto.request.LoginRequest;
+import com.triply.backend.domain.dto.request.AuthenticationRequest;
 import com.triply.backend.domain.dto.request.RegisterRequest;
 import com.triply.backend.domain.dto.response.AuthenticationResponse;
 import com.triply.backend.domain.entity.Role;
@@ -18,7 +18,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationServiceImplementation implements AuthenticationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -43,7 +43,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(LoginRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
                 request.getPassword()
