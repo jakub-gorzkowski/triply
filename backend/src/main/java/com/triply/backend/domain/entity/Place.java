@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +34,10 @@ public class Place {
     private String address;
 
     private String description;
+
+    @JsonProperty(value = "added_on")
+    @Column(name = "added_on")
+    private LocalDateTime addedOn;
 
     @JsonProperty(value = "image_url")
     @Column(name = "image_url")
