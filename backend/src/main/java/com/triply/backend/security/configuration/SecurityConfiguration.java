@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                     ).permitAll();
 
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/latest").authenticated();
+                    authorize.requestMatchers(HttpMethod.POST, "/api/v1/place/add").authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

@@ -1,6 +1,8 @@
 package com.triply.backend.controller;
 
 import com.triply.backend.domain.dto.item.PlaceItem;
+import com.triply.backend.domain.dto.request.PlaceRequest;
+import com.triply.backend.domain.dto.response.PlaceResponse;
 import com.triply.backend.service.place.PlaceService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +26,12 @@ import java.util.List;
 public class PlaceController {
 
     private final PlaceService placeService;
+
+    @PostMapping(path = "/add")
+    public ResponseEntity<PlaceResponse> addPlaceRequest(@RequestBody PlaceRequest placeRequest) {
+        PlaceResponse addedPlace = placeService.addPlace(placeRequest);
+        return new ResponseEntity<>(addedPlace, HttpStatus.CREATED);
+    }
 
     @GetMapping(path = "/latest")
     public ResponseEntity<Page<PlaceItem>> getLatest(

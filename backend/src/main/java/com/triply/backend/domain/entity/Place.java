@@ -3,6 +3,8 @@ package com.triply.backend.domain.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
@@ -27,6 +29,7 @@ import java.util.Set;
 public class Place {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
@@ -42,6 +45,10 @@ public class Place {
     @JsonProperty(value = "image_url")
     @Column(name = "image_url")
     private String imageUrl;
+
+    @JsonProperty(value = "is_approved")
+    @Column(name = "is_approved")
+    private Boolean isApproved = false;
 
     @OneToMany(mappedBy = "place")
     private Set<Review> reviewSet = new HashSet<>();
