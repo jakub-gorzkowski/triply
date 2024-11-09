@@ -10,4 +10,5 @@ public interface PlaceService {
 
     PlaceResponse addPlace(PlaceRequest placeRequest, MultipartFile imageFile);
     Page<PlaceItem> getLatestPlaces(Integer offset, Byte size);
+    PlaceResponse updatePlace(Long id, PlaceRequest placeRequest, MultipartFile imageFile);
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,5 +51,18 @@ public class PlaceController {
         List<PlaceItem> placeItemList = placeService.getLatestPlaces(offset, size).stream().toList();
         Page<PlaceItem> page = new PageImpl<>(placeItemList, PageRequest.of(offset, size), size);
         return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/update")
+    public ResponseEntity<PlaceResponse> updatePlace(
+            @RequestParam(value = "id") Long id,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "address", required = false) String address,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+    ) {
+        PlaceRequest placeRequest = new PlaceRequest(name, address, description, null);
+        PlaceResponse addedPlace = placeService.updatePlace(id, placeRequest, imageFile);
+        return new ResponseEntity<>(addedPlace, HttpStatus.OK);
     }
 }

@@ -30,9 +30,13 @@ public class SecurityConfiguration {
                             "/api/v1/auth/authenticate"
                     ).permitAll();
 
+                    // User endpoints
                     authorize.requestMatchers(HttpMethod.GET, "/data/uploads/**").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/latest").authenticated();
                     authorize.requestMatchers(HttpMethod.POST, "/api/v1/place/add").authenticated();
+
+                    // Admin endpoints
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/update").authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

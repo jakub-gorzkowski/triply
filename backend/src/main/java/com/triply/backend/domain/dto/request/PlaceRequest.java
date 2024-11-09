@@ -14,6 +14,15 @@ import lombok.Setter;
 @Builder
 public class PlaceRequest {
 
+    public PlaceRequest(String name, String address, String description, String imageUrl) {
+        this.name = name;
+        this.address = address;
+        this.description = description;
+        this.imageUrl = imageUrl;
+    }
+
+    private Long id;
+
     private String name;
 
     private String address;
