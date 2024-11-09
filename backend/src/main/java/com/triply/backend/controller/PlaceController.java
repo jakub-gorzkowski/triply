@@ -13,10 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,8 +29,14 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @PostMapping(path = "/add")
-    public ResponseEntity<PlaceResponse> addPlaceRequest(@RequestBody PlaceRequest placeRequest) {
-        PlaceResponse addedPlace = placeService.addPlace(placeRequest);
+    public ResponseEntity<PlaceResponse> addPlaceRequest(
+            @RequestParam("name") String name,
+            @RequestParam("address") String address,
+            @RequestParam("description") String description,
+            @RequestParam("image") MultipartFile imageFile
+    ) {
+        PlaceRequest placeRequest = new PlaceRequest(name, address, description, null);
+        PlaceResponse addedPlace = placeService.addPlace(placeRequest, imageFile);
         return new ResponseEntity<>(addedPlace, HttpStatus.CREATED);
     }
 

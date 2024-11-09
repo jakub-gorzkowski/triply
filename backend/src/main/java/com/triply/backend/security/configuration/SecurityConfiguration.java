@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                             "/api/v1/auth/authenticate"
                     ).permitAll();
 
+                    authorize.requestMatchers(HttpMethod.GET, "/data/uploads/**").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/latest").authenticated();
                     authorize.requestMatchers(HttpMethod.POST, "/api/v1/place/add").authenticated();
                 })
