@@ -11,6 +11,7 @@ import com.triply.backend.domain.mapper.ReviewMapper;
 import com.triply.backend.exception.throwable.PlaceNotFoundException;
 import com.triply.backend.repository.PlaceRepository;
 import com.triply.backend.repository.ReviewRepository;
+import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,6 +49,7 @@ public class PlaceServiceImplementation implements PlaceService {
 
     @Override
     @SneakyThrows
+    @Transactional
     public PlaceResponse addPlace(PlaceRequest placeRequest, MultipartFile imageFile) {
         String fileName = UUID.randomUUID() + "_" + StringUtils.cleanPath(Objects.requireNonNull(imageFile.getOriginalFilename())).replace(" ", "-");
         Path targetLocation = fileStorageLocation.resolve(fileName);

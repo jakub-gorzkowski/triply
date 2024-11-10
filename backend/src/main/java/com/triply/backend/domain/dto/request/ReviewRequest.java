@@ -1,4 +1,4 @@
-package com.triply.backend.domain.dto.item;
+package com.triply.backend.domain.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -7,18 +7,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReviewItem {
+public class ReviewRequest {
 
-    private String username;
+    @JsonProperty(value = "user_email")
+    private String userEmail;
+    @JsonProperty(value = "place_id")
+    private Long placeId;
     private Byte rating;
     private String content;
-    @JsonProperty(value = "added_on")
-    private LocalDateTime addedOn;
 }
