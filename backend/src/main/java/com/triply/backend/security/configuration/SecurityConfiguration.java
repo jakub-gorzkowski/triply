@@ -37,6 +37,7 @@ public class SecurityConfiguration {
 
                     // Admin endpoints
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/update").authenticated();
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/approve").authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

@@ -65,4 +65,10 @@ public class PlaceController {
         PlaceResponse addedPlace = placeService.updatePlace(id, placeRequest, imageFile);
         return new ResponseEntity<>(addedPlace, HttpStatus.OK);
     }
+
+    @PatchMapping(path = "/approve")
+    public ResponseEntity<PlaceResponse> approvePlace(@RequestParam(value = "id") Long id) {
+        PlaceResponse addedPlace = placeService.approvePlace(id);
+        return new ResponseEntity<>(addedPlace, HttpStatus.OK);
+    }
 }

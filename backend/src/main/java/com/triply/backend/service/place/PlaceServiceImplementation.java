@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,7 +48,7 @@ public class PlaceServiceImplementation implements PlaceService {
 
     @Override
     public Page<PlaceItem> getLatestPlaces(Integer offset, Byte size) {
-        return placeRepository.findAllByOrderByAddedOnDesc(PageRequest.of(offset, size))
+        return placeRepository.findByIsApprovedTrueOrderByAddedOnDesc(PageRequest.of(offset, size))
                 .map(PlaceMapper::mapToItem);
     }
 
@@ -73,6 +74,19 @@ public class PlaceServiceImplementation implements PlaceService {
         }).orElseThrow(PlaceNotFoundException::new);
 
         return PlaceMapper.mapToResponse(updatedPlace);
+    }
+
+    @Override
+    @SneakyThrows
+    public PlaceResponse approvePlace(Long id) {
+        Place approvedPlace = placeRepository.findById(id).map(existingPlace -> {
+            Optional.of(id).ifPresent(existingPlace::setId);
+            Optional.of(true).ifPresent(existingPlace::setIsApproved);
+            Optional.of(LocalDateTime.now()).ifPresent(existingPlace::setAddedOn);
+            return placeRepository.save(existingPlace);
+        }).orElseThrow(PlaceNotFoundException::new);
+
+        return PlaceMapper.mapToResponse(approvedPlace);
     }
 
     @SneakyThrows

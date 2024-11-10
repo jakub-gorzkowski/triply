@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long> {
-
-    Page<Place> findAllByOrderByAddedOnDesc(Pageable pageable);
+    Page<Place> findByIsApprovedTrueOrderByAddedOnDesc(Pageable pageable);
 }
