@@ -42,6 +42,7 @@ public class SecurityConfiguration {
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/update").authenticated();
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/approve").authenticated();
                     authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/place/remove").authenticated();
+                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/review/remove").authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

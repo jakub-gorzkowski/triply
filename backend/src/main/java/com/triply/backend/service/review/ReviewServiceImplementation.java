@@ -33,4 +33,9 @@ public class ReviewServiceImplementation implements ReviewService {
         Review review = ReviewMapper.mapFromReviewRequest(reviewRequest, user, place);
         return ReviewMapper.mapToItem(reviewRepository.save(review));
     }
+
+    @Override
+    public void deleteReview(Long id) {
+        reviewRepository.deleteById(id);
+    }
 }
