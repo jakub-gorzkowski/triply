@@ -4,6 +4,7 @@ import com.triply.backend.domain.dto.item.PlaceItem;
 import com.triply.backend.domain.dto.item.ReviewItem;
 import com.triply.backend.domain.dto.request.PlaceRequest;
 import com.triply.backend.domain.dto.response.PlaceResponse;
+import com.triply.backend.domain.dto.response.RatingResponse;
 import com.triply.backend.domain.entity.Place;
 import com.triply.backend.domain.mapper.PlaceMapper;
 import com.triply.backend.domain.mapper.ReviewMapper;
@@ -18,11 +19,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -65,6 +70,28 @@ public class PlaceServiceImplementation implements PlaceService {
         return reviewRepository.findAllByPlaceId(id,
                         PageRequest.of(offset, size, Sort.by(Sort.Direction.DESC, "addedOn")))
                 .map(ReviewMapper::mapToItem);
+    }
+
+    @Override
+    @SneakyThrows
+    public List<RatingResponse> getRatingsDistribution(Long id) {
+        placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);
+        List<RatingResponse> distribution = new ArrayList<>();
+        Long total = reviewRepository.countReviewsByPlaceId(id);
+
+        for (Byte rating = 1; rating <= 5; rating++) {
+            Long ratings = reviewRepository.countReviewsByPlaceIdAndRating(id, rating);
+            Double ratingPercentage = BigDecimal.valueOf(100 * Double.valueOf(ratings) / total)
+                    .setScale(2, RoundingMode.HALF_UP)
+                    .doubleValue();
+
+            distribution.add(RatingResponse.builder()
+                    .rate(rating.toString())
+                    .percentage(ratingPercentage)
+                    .build()
+            );
+        }
+        return distribution;
     }
 
     @Override

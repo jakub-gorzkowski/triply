@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Page<Review> findAllByPlaceId(Long placeId, Pageable pageable);
+    Long countReviewsByPlaceId(Long placeId);
+    Long countReviewsByPlaceIdAndRating(Long placeId, Byte rating);
 }

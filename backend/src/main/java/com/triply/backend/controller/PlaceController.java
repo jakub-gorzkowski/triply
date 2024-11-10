@@ -4,6 +4,7 @@ import com.triply.backend.domain.dto.item.PlaceItem;
 import com.triply.backend.domain.dto.item.ReviewItem;
 import com.triply.backend.domain.dto.request.PlaceRequest;
 import com.triply.backend.domain.dto.response.PlaceResponse;
+import com.triply.backend.domain.dto.response.RatingResponse;
 import com.triply.backend.service.place.PlaceService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/place")
@@ -71,6 +74,12 @@ public class PlaceController {
                 reviews.getTotalElements()
         );
         return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/ratings")
+    public ResponseEntity<List<RatingResponse>> getRatingsDistribution(@RequestParam(name = "id") Long id) {
+        List<RatingResponse> distribution = placeService.getRatingsDistribution(id);
+        return new ResponseEntity<>(distribution, HttpStatus.OK);
     }
 
     @PatchMapping(path = "/update")
