@@ -1,15 +1,19 @@
 package com.triply.backend.service.place;
 
 import com.triply.backend.domain.dto.item.PlaceItem;
+import com.triply.backend.domain.dto.item.ReviewItem;
 import com.triply.backend.domain.dto.request.PlaceRequest;
 import com.triply.backend.domain.dto.response.PlaceResponse;
 import com.triply.backend.domain.entity.Place;
 import com.triply.backend.domain.mapper.PlaceMapper;
+import com.triply.backend.domain.mapper.ReviewMapper;
 import com.triply.backend.exception.throwable.PlaceNotFoundException;
 import com.triply.backend.repository.PlaceRepository;
+import com.triply.backend.repository.ReviewRepository;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,11 +31,13 @@ import java.util.UUID;
 public class PlaceServiceImplementation implements PlaceService {
 
     private final PlaceRepository placeRepository;
+    private final ReviewRepository reviewRepository;
     private final Path fileStorageLocation = Paths.get("data/uploads/places").toAbsolutePath().normalize();
 
     @SneakyThrows
-    public PlaceServiceImplementation(PlaceRepository placeRepository) {
+    public PlaceServiceImplementation(PlaceRepository placeRepository, ReviewRepository reviewRepository) {
         this.placeRepository = placeRepository;
+        this.reviewRepository = reviewRepository;
         Files.createDirectories(this.fileStorageLocation);
     }
 
@@ -51,6 +57,14 @@ public class PlaceServiceImplementation implements PlaceService {
     public Page<PlaceItem> getLatestPlaces(Integer offset, Byte size) {
         return placeRepository.findByIsApprovedTrueOrderByAddedOnDesc(PageRequest.of(offset, size))
                 .map(PlaceMapper::mapToItem);
+    }
+
+    @Override
+    @SneakyThrows
+    public Page<ReviewItem> getReviews(Long id, Integer offset, Byte size) {
+        return reviewRepository.findAllByPlaceId(id,
+                        PageRequest.of(offset, size, Sort.by(Sort.Direction.DESC, "addedOn")))
+                .map(ReviewMapper::mapToItem);
     }
 
     @Override

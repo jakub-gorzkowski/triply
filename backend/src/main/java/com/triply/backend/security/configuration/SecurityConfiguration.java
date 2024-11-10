@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                     // User endpoints
                     authorize.requestMatchers(HttpMethod.GET, "/data/uploads/**").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/latest").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/reviews").authenticated();
                     authorize.requestMatchers(HttpMethod.POST, "/api/v1/place/add").authenticated();
 
                     // Admin endpoints

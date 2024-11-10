@@ -31,5 +31,6 @@ spring:
   web:
     resources:
       static-locations: file:data/uploads/,classpath:/static/
+
   mvc:
     static-path-pattern: /data/uploads/**

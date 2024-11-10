@@ -1,6 +1,7 @@
 package com.triply.backend.controller;
 
 import com.triply.backend.domain.dto.item.PlaceItem;
+import com.triply.backend.domain.dto.item.ReviewItem;
 import com.triply.backend.domain.dto.request.PlaceRequest;
 import com.triply.backend.domain.dto.response.PlaceResponse;
 import com.triply.backend.service.place.PlaceService;
@@ -15,13 +16,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/place")
@@ -44,13 +42,34 @@ public class PlaceController {
 
     @GetMapping(path = "/latest")
     public ResponseEntity<Page<PlaceItem>> getLatest(
-            @RequestHeader(name = "offset") @Nullable Integer offset,
-            @RequestHeader(name = "size") @Nullable Byte size
+            @RequestParam(name = "offset") @Nullable Integer offset,
+            @RequestParam(name = "size") @Nullable Byte size
     ) {
         offset = (offset != null) ? offset : 0;
         size = (size != null) ? size : 10;
-        List<PlaceItem> placeItemList = placeService.getLatestPlaces(offset, size).stream().toList();
-        Page<PlaceItem> page = new PageImpl<>(placeItemList, PageRequest.of(offset, size), size);
+        Page<PlaceItem> places = placeService.getLatestPlaces(offset, size);
+        Page<PlaceItem> page = new PageImpl<>(
+                places.toList(),
+                PageRequest.of(offset, size),
+                places.getTotalElements()
+        );
+        return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/reviews")
+    public ResponseEntity<Page<ReviewItem>> getReviews(
+            @RequestParam(name = "id") Long id,
+            @RequestParam(name = "offset") @Nullable Integer offset,
+            @RequestParam(name = "size") @Nullable Byte size
+    ) {
+        offset = (offset != null) ? offset : 0;
+        size = (size != null) ? size : 10;
+        Page<ReviewItem> reviews = placeService.getReviews(id, offset, size);
+        Page<ReviewItem> page = new PageImpl<>(
+                reviews.toList(),
+                PageRequest.of(offset, size),
+                reviews.getTotalElements()
+        );
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
