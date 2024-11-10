@@ -34,6 +34,7 @@ public class PlaceServiceImplementation implements PlaceService {
         this.placeRepository = placeRepository;
         Files.createDirectories(this.fileStorageLocation);
     }
+
     @Override
     @SneakyThrows
     public PlaceResponse addPlace(PlaceRequest placeRequest, MultipartFile imageFile) {
@@ -87,6 +88,14 @@ public class PlaceServiceImplementation implements PlaceService {
         }).orElseThrow(PlaceNotFoundException::new);
 
         return PlaceMapper.mapToResponse(approvedPlace);
+    }
+
+    @Override
+    @SneakyThrows
+    public void deletePlace(Long id) {
+        Place existingPlace = placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);
+        deleteImageIfExists(existingPlace.getImageUrl());
+        placeRepository.deleteById(id);
     }
 
     @SneakyThrows

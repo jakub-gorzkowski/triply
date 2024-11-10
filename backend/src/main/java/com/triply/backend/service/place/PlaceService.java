@@ -12,4 +12,5 @@ public interface PlaceService {
     Page<PlaceItem> getLatestPlaces(Integer offset, Byte size);
     PlaceResponse updatePlace(Long id, PlaceRequest placeRequest, MultipartFile imageFile);
     PlaceResponse approvePlace(Long id);
+    void deletePlace(Long id);
 }
