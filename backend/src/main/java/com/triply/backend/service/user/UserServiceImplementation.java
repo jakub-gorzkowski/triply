@@ -29,4 +29,9 @@ public class UserServiceImplementation implements UserService {
             return userRepository.save(existingUser);
         }).orElseThrow(UserNotFoundException::new);
     }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
 }
