@@ -46,7 +46,10 @@ public class SecurityConfiguration {
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/todo").authenticated();
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/todo/toggle").authenticated();
 
-                    authorize.requestMatchers(HttpMethod.POST, "/api/v1/trip/add").authenticated();
+                    authorize.requestMatchers(HttpMethod.POST, "/api/v1/trip").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/upcoming").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/past").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/next").authenticated();
 
                     // Admin endpoints
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/update").authenticated();
