@@ -111,6 +111,22 @@ public class TripServiceImplementation implements TripService {
 
     @Override
     @SneakyThrows
+    public void removePlace(User user, Long tripId, Long placeId) {
+        Trip trip = tripRepository.findById(tripId).orElseThrow(TripNotFoundException::new);
+        Place place = placeService.getPlaceById(placeId);
+
+        if (!trip.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException();
+        }
+
+        place.getTripSet().remove(trip);
+        trip.getPlaceSet().remove(place);
+
+        tripRepository.save(trip);
+    }
+
+    @Override
+    @SneakyThrows
     public void deleteTrip(User user, Long tripId) {
         Trip trip = tripRepository.findById(tripId).orElseThrow(TripNotFoundException::new);
         if (!trip.getUser().getId().equals(user.getId())) {

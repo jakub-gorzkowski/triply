@@ -53,6 +53,7 @@ public class SecurityConfiguration {
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/places").authenticated();
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/trip/update").authenticated();
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/trip/add-place").authenticated();
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/trip/remove-place").authenticated();
                     authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/trip/remove").authenticated();
 
                     // Admin endpoints

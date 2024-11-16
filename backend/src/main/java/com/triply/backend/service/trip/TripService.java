@@ -22,5 +22,7 @@ public interface TripService {
 
     void addPlace(User user, Long tripId, Long placeId);
 
+    void removePlace(User user, Long tripId, Long placeId);
+
     void deleteTrip(User user, Long id);
 }
