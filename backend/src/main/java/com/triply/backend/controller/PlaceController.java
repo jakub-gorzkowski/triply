@@ -45,11 +45,9 @@ public class PlaceController {
 
     @GetMapping(path = "/latest")
     public ResponseEntity<Page<PlaceItem>> getLatest(
-            @RequestParam(name = "offset") @Nullable Integer offset,
-            @RequestParam(name = "size") @Nullable Byte size
+            @RequestParam(name = "offset", defaultValue = "0") @Nullable Integer offset,
+            @RequestParam(name = "size", defaultValue = "10") @Nullable Byte size
     ) {
-        offset = (offset != null) ? offset : 0;
-        size = (size != null) ? size : 10;
         Page<PlaceItem> places = placeService.getLatestPlaces(offset, size);
         Page<PlaceItem> page = new PageImpl<>(
                 places.toList(),
@@ -61,11 +59,9 @@ public class PlaceController {
 
     @GetMapping(path = "/popular")
     public ResponseEntity<Page<PlaceItem>> getPopular(
-            @RequestParam(name = "offset") @Nullable Integer offset,
-            @RequestParam(name = "size") @Nullable Byte size
+            @RequestParam(name = "offset", defaultValue = "0") @Nullable Integer offset,
+            @RequestParam(name = "size", defaultValue = "10") @Nullable Byte size
     ) {
-        offset = (offset != null) ? offset : 0;
-        size = (size != null) ? size : 10;
         Page<PlaceItem> places = placeService.getPopularPlaces(offset, size);
         Page<PlaceItem> page = new PageImpl<>(
                 places.toList(),
@@ -78,11 +74,9 @@ public class PlaceController {
     @GetMapping(path = "/reviews")
     public ResponseEntity<Page<ReviewItem>> getReviews(
             @RequestParam(name = "id") Long id,
-            @RequestParam(name = "offset") @Nullable Integer offset,
-            @RequestParam(name = "size") @Nullable Byte size
+            @RequestParam(name = "offset", defaultValue = "0") @Nullable Integer offset,
+            @RequestParam(name = "size", defaultValue = "10") @Nullable Byte size
     ) {
-        offset = (offset != null) ? offset : 0;
-        size = (size != null) ? size : 10;
         Page<ReviewItem> reviews = placeService.getReviews(id, offset, size);
         Page<ReviewItem> page = new PageImpl<>(
                 reviews.toList(),
