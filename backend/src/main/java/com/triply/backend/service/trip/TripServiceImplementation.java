@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -69,5 +70,23 @@ public class TripServiceImplementation implements TripService {
 
         return tripRepository.findTripPlaces(trip.getId(), PageRequest.of(offset, size))
                 .map(PlaceMapper::mapToItem);
+    }
+
+    @Override
+    @SneakyThrows
+    public TripResponse updateTrip(User user, Long tripId, TripRequest tripRequest) {
+        Trip updatedTrip = tripRepository.findById(tripId).map(existingTrip -> {
+            Optional.ofNullable(tripRequest.getName()).ifPresent(existingTrip::setName);
+            Optional.ofNullable(tripRequest.getStartDate()).ifPresent(existingTrip::setStartDate);
+            Optional.ofNullable(tripRequest.getEndDate()).ifPresent(existingTrip::setEndDate);
+
+            return tripRepository.save(existingTrip);
+        }).orElseThrow(TripNotFoundException::new);
+
+        if (!updatedTrip.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException();
+        }
+
+        return TripMapper.mapToResponse(updatedTrip);
     }
 }

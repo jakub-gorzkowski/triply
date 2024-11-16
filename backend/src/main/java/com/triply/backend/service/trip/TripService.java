@@ -17,4 +17,6 @@ public interface TripService {
     TripResponse getNextTrip(User user);
 
     Page<PlaceItem> getTripPlaces(User user, Long tripId, Integer offset, Byte size);
+
+    TripResponse updateTrip(User user, Long id, TripRequest request);
 }

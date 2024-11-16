@@ -12,7 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,5 +87,15 @@ public class TripController {
                 tripPlaces.getTotalElements()
         );
         return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/update")
+    public ResponseEntity<TripResponse> updateTrip(
+            @AuthenticationPrincipal User user,
+            @RequestParam(value = "id") Long id,
+            @RequestBody TripRequest tripRequest
+    ) {
+        TripResponse updatedTrip = tripService.updateTrip(user, id, tripRequest);
+        return new ResponseEntity<>(updatedTrip, HttpStatus.OK);
     }
 }

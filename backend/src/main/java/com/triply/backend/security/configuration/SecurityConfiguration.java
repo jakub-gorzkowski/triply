@@ -51,6 +51,7 @@ public class SecurityConfiguration {
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/past").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/next").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/places").authenticated();
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/trip/update").authenticated();
 
                     // Admin endpoints
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/update").authenticated();
