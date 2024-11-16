@@ -3,6 +3,7 @@ package com.triply.backend.service.trip;
 import com.triply.backend.domain.dto.item.PlaceItem;
 import com.triply.backend.domain.dto.request.TripRequest;
 import com.triply.backend.domain.dto.response.TripResponse;
+import com.triply.backend.domain.entity.Place;
 import com.triply.backend.domain.entity.Trip;
 import com.triply.backend.domain.entity.User;
 import com.triply.backend.domain.mapper.PlaceMapper;
@@ -10,6 +11,7 @@ import com.triply.backend.domain.mapper.TripMapper;
 import com.triply.backend.exception.throwable.AccessDeniedException;
 import com.triply.backend.exception.throwable.TripNotFoundException;
 import com.triply.backend.repository.TripRepository;
+import com.triply.backend.service.place.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ import java.util.Optional;
 public class TripServiceImplementation implements TripService {
 
     private final TripRepository tripRepository;
+    private final PlaceService placeService;
 
     @Override
     public TripResponse createTrip(User user, TripRequest request) {
@@ -88,6 +91,22 @@ public class TripServiceImplementation implements TripService {
         }
 
         return TripMapper.mapToResponse(updatedTrip);
+    }
+
+    @Override
+    @SneakyThrows
+    public void addPlace(User user, Long tripId, Long placeId) {
+        Trip trip = tripRepository.findById(tripId).orElseThrow(TripNotFoundException::new);
+        Place place = placeService.getPlaceById(placeId);
+
+        if (!trip.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException();
+        }
+
+        place.getTripSet().add(trip);
+        trip.getPlaceSet().add(place);
+
+        tripRepository.save(trip);
     }
 
     @Override

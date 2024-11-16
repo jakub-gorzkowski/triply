@@ -2,6 +2,7 @@ package com.triply.backend.controller;
 
 import com.triply.backend.domain.dto.item.PlaceItem;
 import com.triply.backend.domain.dto.request.TripRequest;
+import com.triply.backend.domain.dto.response.PlaceResponse;
 import com.triply.backend.domain.dto.response.TripResponse;
 import com.triply.backend.domain.entity.User;
 import com.triply.backend.service.trip.TripService;
@@ -97,6 +98,16 @@ public class TripController {
     ) {
         TripResponse updatedTrip = tripService.updateTrip(user, id, tripRequest);
         return new ResponseEntity<>(updatedTrip, HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/add-place")
+    public ResponseEntity<PlaceResponse> addPlace(
+            @AuthenticationPrincipal User user,
+            @RequestParam(value = "trip_id") Long tripId,
+            @RequestParam(value = "place_id") Long placeId
+    ) {
+        tripService.addPlace(user, tripId, placeId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/remove")

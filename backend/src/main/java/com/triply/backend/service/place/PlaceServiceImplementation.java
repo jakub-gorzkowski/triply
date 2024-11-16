@@ -61,6 +61,12 @@ public class PlaceServiceImplementation implements PlaceService {
     }
 
     @Override
+    @SneakyThrows
+    public Place getPlaceById(Long id) {
+        return placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);
+    }
+
+    @Override
     public Page<PlaceItem> getLatestPlaces(Integer offset, Byte size) {
         return placeRepository.findByIsApprovedTrueOrderByAddedOnDesc(PageRequest.of(offset, size))
                 .map(PlaceMapper::mapToItem);
