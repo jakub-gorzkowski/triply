@@ -89,4 +89,14 @@ public class TripServiceImplementation implements TripService {
 
         return TripMapper.mapToResponse(updatedTrip);
     }
+
+    @Override
+    @SneakyThrows
+    public void deleteTrip(User user, Long tripId) {
+        Trip trip = tripRepository.findById(tripId).orElseThrow(TripNotFoundException::new);
+        if (!trip.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException();
+        }
+        tripRepository.delete(trip);
+    }
 }

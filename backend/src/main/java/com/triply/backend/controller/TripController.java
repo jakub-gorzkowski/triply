@@ -98,4 +98,13 @@ public class TripController {
         TripResponse updatedTrip = tripService.updateTrip(user, id, tripRequest);
         return new ResponseEntity<>(updatedTrip, HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "/remove")
+    public ResponseEntity<Void> deleteTrip(
+            @AuthenticationPrincipal User user,
+            @RequestParam(value = "id") Long id
+    ) {
+        tripService.deleteTrip(user, id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
