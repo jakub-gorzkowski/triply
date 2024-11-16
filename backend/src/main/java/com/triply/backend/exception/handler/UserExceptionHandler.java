@@ -1,5 +1,6 @@
 package com.triply.backend.exception.handler;
 
+import com.triply.backend.exception.throwable.AccessDeniedException;
 import com.triply.backend.exception.throwable.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.ErrorResponse;
@@ -19,6 +20,16 @@ public class UserExceptionHandler {
         return ErrorResponse.builder(exception, HttpStatus.NOT_FOUND, exception.getMessage())
                 .type(URI.create(""))
                 .title("User not found")
+                .property("timestamp", Instant.now())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ErrorResponse handleUserNotFoundException(AccessDeniedException exception) {
+        return ErrorResponse.builder(exception, HttpStatus.UNAUTHORIZED, exception.getMessage())
+                .type(URI.create(""))
+                .title("Access denied")
                 .property("timestamp", Instant.now())
                 .build();
     }
