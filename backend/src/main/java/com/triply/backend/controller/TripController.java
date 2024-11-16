@@ -1,5 +1,6 @@
 package com.triply.backend.controller;
 
+import com.triply.backend.domain.dto.item.PlaceItem;
 import com.triply.backend.domain.dto.request.TripRequest;
 import com.triply.backend.domain.dto.response.TripResponse;
 import com.triply.backend.domain.entity.User;
@@ -68,5 +69,21 @@ public class TripController {
     public ResponseEntity<TripResponse> getNextTrip(@AuthenticationPrincipal User user) {
         TripResponse nextTrip = tripService.getNextTrip(user);
         return new ResponseEntity<>(nextTrip, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/places")
+    public ResponseEntity<Page<PlaceItem>> getTripPlaces(
+            @AuthenticationPrincipal User user,
+            @RequestParam(value = "id") Long id,
+            @RequestParam(value = "offset", defaultValue = "0") Integer offset,
+            @RequestParam(value = "size", defaultValue = "10") Byte size
+    ) {
+        Page<PlaceItem> tripPlaces = tripService.getTripPlaces(user, id, offset, size);
+        Page<PlaceItem> page = new PageImpl<>(
+                tripPlaces.toList(),
+                PageRequest.of(offset, size),
+                tripPlaces.getTotalElements()
+        );
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 }

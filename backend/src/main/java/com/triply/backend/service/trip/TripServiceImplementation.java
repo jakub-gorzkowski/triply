@@ -1,10 +1,13 @@
 package com.triply.backend.service.trip;
 
+import com.triply.backend.domain.dto.item.PlaceItem;
 import com.triply.backend.domain.dto.request.TripRequest;
 import com.triply.backend.domain.dto.response.TripResponse;
 import com.triply.backend.domain.entity.Trip;
 import com.triply.backend.domain.entity.User;
+import com.triply.backend.domain.mapper.PlaceMapper;
 import com.triply.backend.domain.mapper.TripMapper;
+import com.triply.backend.exception.throwable.AccessDeniedException;
 import com.triply.backend.exception.throwable.TripNotFoundException;
 import com.triply.backend.repository.TripRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +57,17 @@ public class TripServiceImplementation implements TripService {
         return tripRepository.findFirstByUserAndStartDateAfterOrderByStartDateAsc(user, LocalDate.now())
                 .map(TripMapper::mapToResponse)
                 .orElseThrow(TripNotFoundException::new);
+    }
+
+    @Override
+    @SneakyThrows
+    public Page<PlaceItem> getTripPlaces(User user, Long tripId, Integer offset, Byte size) {
+        Trip trip = tripRepository.findById(tripId).orElseThrow(TripNotFoundException::new);
+        if (!trip.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException();
+        }
+
+        return tripRepository.findTripPlaces(trip.getId(), PageRequest.of(offset, size))
+                .map(PlaceMapper::mapToItem);
     }
 }

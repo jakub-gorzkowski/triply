@@ -1,5 +1,6 @@
 package com.triply.backend.service.trip;
 
+import com.triply.backend.domain.dto.item.PlaceItem;
 import com.triply.backend.domain.dto.request.TripRequest;
 import com.triply.backend.domain.dto.response.TripResponse;
 import com.triply.backend.domain.entity.User;
@@ -14,4 +15,6 @@ public interface TripService {
     Page<TripResponse> getPastTrips(User user, Integer offset, Byte size);
 
     TripResponse getNextTrip(User user);
+
+    Page<PlaceItem> getTripPlaces(User user, Long tripId, Integer offset, Byte size);
 }
