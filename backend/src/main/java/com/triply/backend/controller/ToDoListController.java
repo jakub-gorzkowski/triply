@@ -1,6 +1,6 @@
 package com.triply.backend.controller;
 
-import com.triply.backend.domain.dto.request.CreateTaskRequest;
+import com.triply.backend.domain.dto.request.TaskRequest;
 import com.triply.backend.domain.dto.response.TaskResponse;
 import com.triply.backend.domain.entity.User;
 import com.triply.backend.service.task.TaskService;
@@ -26,10 +26,10 @@ public class ToDoListController {
 
     private final TaskService taskService;
 
-    @PostMapping
+    @PostMapping(path = "/add")
     public ResponseEntity<TaskResponse> createTask(
             @AuthenticationPrincipal User user,
-            @RequestBody CreateTaskRequest request
+            @RequestBody TaskRequest request
     ) {
         TaskResponse taskResponse = taskService.createTask(user.getId(), request);
         return new ResponseEntity<>(taskResponse, HttpStatus.CREATED);

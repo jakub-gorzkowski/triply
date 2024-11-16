@@ -1,6 +1,6 @@
 package com.triply.backend.service.task;
 
-import com.triply.backend.domain.dto.request.CreateTaskRequest;
+import com.triply.backend.domain.dto.request.TaskRequest;
 import com.triply.backend.domain.dto.response.TaskResponse;
 import com.triply.backend.domain.entity.Task;
 import com.triply.backend.domain.entity.ToDoList;
@@ -44,7 +44,7 @@ public class TaskServiceImplementation implements TaskService {
     }
 
     @Override
-    public TaskResponse createTask(Long userId, CreateTaskRequest request) {
+    public TaskResponse createTask(Long userId, TaskRequest request) {
         ToDoList toDoList = toDoListRepository.findByUserId(userId)
                 .orElseGet(() -> createToDoList(userId));
 

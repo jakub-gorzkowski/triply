@@ -27,6 +27,7 @@ public class PlaceMapper {
         return PlaceItem.builder()
                 .name(place.getName())
                 .imageUrl(place.getImageUrl())
+                .address(place.getAddress())
                 .addedOn(place.getAddedOn())
                 .build();
     }

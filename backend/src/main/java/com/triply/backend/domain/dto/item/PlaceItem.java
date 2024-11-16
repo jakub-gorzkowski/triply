@@ -19,6 +19,7 @@ public class PlaceItem {
     @JsonProperty(value = "image_url")
     private String imageUrl;
     private String name;
+    private String address;
     @JsonProperty(value = "added_on")
     private LocalDateTime addedOn;
 }
