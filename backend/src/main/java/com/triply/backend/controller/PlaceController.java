@@ -59,6 +59,22 @@ public class PlaceController {
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/popular")
+    public ResponseEntity<Page<PlaceItem>> getPopular(
+            @RequestParam(name = "offset") @Nullable Integer offset,
+            @RequestParam(name = "size") @Nullable Byte size
+    ) {
+        offset = (offset != null) ? offset : 0;
+        size = (size != null) ? size : 10;
+        Page<PlaceItem> places = placeService.getPopularPlaces(offset, size);
+        Page<PlaceItem> page = new PageImpl<>(
+                places.toList(),
+                PageRequest.of(offset, size),
+                places.getTotalElements()
+        );
+        return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/reviews")
     public ResponseEntity<Page<ReviewItem>> getReviews(
             @RequestParam(name = "id") Long id,

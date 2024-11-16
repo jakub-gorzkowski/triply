@@ -14,6 +14,7 @@ public interface PlaceService {
 
     PlaceResponse addPlace(PlaceRequest placeRequest, MultipartFile imageFile);
     Page<PlaceItem> getLatestPlaces(Integer offset, Byte size);
+    Page<PlaceItem> getPopularPlaces(Integer offset, Byte size);
     Page<ReviewItem> getReviews(Long id, Integer offset, Byte size);
     List<RatingResponse> getRatingsDistribution(Long id);
     PlaceResponse updatePlace(Long id, PlaceRequest placeRequest, MultipartFile imageFile);

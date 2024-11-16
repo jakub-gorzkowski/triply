@@ -67,6 +67,12 @@ public class PlaceServiceImplementation implements PlaceService {
     }
 
     @Override
+    public Page<PlaceItem> getPopularPlaces(Integer offset, Byte size) {
+        return placeRepository.findAllApprovedOrderByReviewCountDesc(PageRequest.of(offset, size))
+                .map(PlaceMapper::mapToItem);
+    }
+
+    @Override
     @SneakyThrows
     public Page<ReviewItem> getReviews(Long id, Integer offset, Byte size) {
         return reviewRepository.findAllByPlaceId(id,
