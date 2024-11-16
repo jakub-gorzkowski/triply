@@ -32,24 +32,29 @@ public class SecurityConfiguration {
 
                     // User endpoints
                     authorize.requestMatchers(HttpMethod.GET, "/data/uploads/**").authenticated();
+
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/latest").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/popular").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/reviews").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/ratings").authenticated();
                     authorize.requestMatchers(HttpMethod.POST, "/api/v1/place/add").authenticated();
                     authorize.requestMatchers(HttpMethod.POST, "/api/v1/review/add").authenticated();
+
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/user/update").authenticated();
 
-                    authorize.requestMatchers(HttpMethod.POST, "/api/v1/todo").authenticated();
+                    authorize.requestMatchers(HttpMethod.POST, "/api/v1/todo/add").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/todo").authenticated();
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/todo/toggle").authenticated();
-                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/todo/delete").authenticated();
+
+                    authorize.requestMatchers(HttpMethod.POST, "/api/v1/trip/add").authenticated();
 
                     // Admin endpoints
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/update").authenticated();
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/approve").authenticated();
                     authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/place/remove").authenticated();
+
                     authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/review/remove").authenticated();
+
                     authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/user/delete").authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
