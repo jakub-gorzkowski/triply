@@ -5,10 +5,13 @@ import com.triply.backend.domain.dto.item.ReviewItem;
 import com.triply.backend.domain.dto.request.PlaceRequest;
 import com.triply.backend.domain.dto.response.PlaceResponse;
 import com.triply.backend.domain.dto.response.RatingResponse;
+import com.triply.backend.domain.entity.Category;
 import com.triply.backend.domain.entity.Place;
 import com.triply.backend.domain.mapper.PlaceMapper;
 import com.triply.backend.domain.mapper.ReviewMapper;
+import com.triply.backend.exception.throwable.CategoryNotFoundException;
 import com.triply.backend.exception.throwable.PlaceNotFoundException;
+import com.triply.backend.repository.CategoryRepository;
 import com.triply.backend.repository.PlaceRepository;
 import com.triply.backend.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
@@ -38,12 +41,18 @@ public class PlaceServiceImplementation implements PlaceService {
 
     private final PlaceRepository placeRepository;
     private final ReviewRepository reviewRepository;
+    private final CategoryRepository categoryRepository;
     private final Path fileStorageLocation = Paths.get("data/uploads/places").toAbsolutePath().normalize();
 
     @SneakyThrows
-    public PlaceServiceImplementation(PlaceRepository placeRepository, ReviewRepository reviewRepository) {
+    public PlaceServiceImplementation(
+            PlaceRepository placeRepository,
+            ReviewRepository reviewRepository,
+            CategoryRepository categoryRepository
+    ) {
         this.placeRepository = placeRepository;
         this.reviewRepository = reviewRepository;
+        this.categoryRepository = categoryRepository;
         Files.createDirectories(this.fileStorageLocation);
     }
 
@@ -56,7 +65,15 @@ public class PlaceServiceImplementation implements PlaceService {
         Files.copy(imageFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
         placeRequest.setImageUrl("/data/uploads/places/" + fileName);
-        Place savedPlace = placeRepository.save(PlaceMapper.mapFromPlaceRequest(placeRequest));
+        Place place = PlaceMapper.mapFromPlaceRequest(placeRequest);
+        Long categoryId = placeRequest.getCategoryId();
+
+        if (categoryId != null) {
+            Category category = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+            place.setCategory(category);
+        }
+
+        Place savedPlace = placeRepository.save(place);
         return PlaceMapper.mapToResponse(savedPlace);
     }
 
@@ -110,6 +127,7 @@ public class PlaceServiceImplementation implements PlaceService {
 
     @Override
     @SneakyThrows
+    @Transactional
     public PlaceResponse updatePlace(Long id, PlaceRequest placeRequest, MultipartFile imageFile) {
         if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = UUID.randomUUID() + "_" + StringUtils.cleanPath(Objects.requireNonNull(imageFile.getOriginalFilename())).replace(" ", "-");
@@ -118,10 +136,14 @@ public class PlaceServiceImplementation implements PlaceService {
             placeRequest.setImageUrl("/data/uploads/places/" + fileName);
         }
 
+        Category category = categoryRepository.findById(placeRequest.getCategoryId())
+                .orElseThrow(CategoryNotFoundException::new);
+
         Place updatedPlace = placeRepository.findById(id).map(existingPlace -> {
             Optional.ofNullable(placeRequest.getAddress()).ifPresent(existingPlace::setAddress);
             Optional.ofNullable(placeRequest.getName()).ifPresent(existingPlace::setName);
             Optional.ofNullable(placeRequest.getDescription()).ifPresent(existingPlace::setDescription);
+            Optional.ofNullable(placeRequest.getCategoryId()).ifPresent(categoryId -> existingPlace.setCategory(category));
             Optional.ofNullable(placeRequest.getImageUrl()).ifPresent(place -> {
                 deleteImageIfExists(existingPlace.getImageUrl());
                 existingPlace.setImageUrl(placeRequest.getImageUrl());

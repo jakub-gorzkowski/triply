@@ -14,10 +14,11 @@ import lombok.Setter;
 @Builder
 public class PlaceRequest {
 
-    public PlaceRequest(String name, String address, String description, String imageUrl) {
+    public PlaceRequest(String name, String address, String description, Long categoryId, String imageUrl) {
         this.name = name;
         this.address = address;
         this.description = description;
+        this.categoryId = categoryId;
         this.imageUrl = imageUrl;
     }
 
@@ -28,6 +29,9 @@ public class PlaceRequest {
     private String address;
 
     private String description;
+
+    @JsonProperty(value = "category_id")
+    private Long categoryId;
 
     @JsonProperty(value = "image_url")
     private String imageUrl;

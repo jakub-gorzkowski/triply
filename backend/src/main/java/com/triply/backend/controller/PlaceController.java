@@ -33,12 +33,13 @@ public class PlaceController {
 
     @PostMapping(path = "/add")
     public ResponseEntity<PlaceResponse> addPlaceRequest(
-            @RequestParam("name") String name,
-            @RequestParam("address") String address,
-            @RequestParam("description") String description,
-            @RequestParam("image") MultipartFile imageFile
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "address") String address,
+            @RequestParam(value = "description") String description,
+            @RequestParam(value = "category_id") Long categoryId,
+            @RequestParam(value = "image") MultipartFile imageFile
     ) {
-        PlaceRequest placeRequest = new PlaceRequest(name, address, description, null);
+        PlaceRequest placeRequest = new PlaceRequest(name, address, description, categoryId, null);
         PlaceResponse addedPlace = placeService.addPlace(placeRequest, imageFile);
         return new ResponseEntity<>(addedPlace, HttpStatus.CREATED);
     }
@@ -98,9 +99,10 @@ public class PlaceController {
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "address", required = false) String address,
             @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "category_id", required = false) Long categoryId,
             @RequestParam(value = "image", required = false) MultipartFile imageFile
     ) {
-        PlaceRequest placeRequest = new PlaceRequest(name, address, description, null);
+        PlaceRequest placeRequest = new PlaceRequest(name, address, description, categoryId, null);
         PlaceResponse addedPlace = placeService.updatePlace(id, placeRequest, imageFile);
         return new ResponseEntity<>(addedPlace, HttpStatus.OK);
     }

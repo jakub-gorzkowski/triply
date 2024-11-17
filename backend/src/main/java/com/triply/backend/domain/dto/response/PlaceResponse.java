@@ -24,6 +24,8 @@ public class PlaceResponse {
 
     private String description;
 
+    private String category;
+
     @JsonProperty(value = "added_on")
     private LocalDateTime addedOn;
 
