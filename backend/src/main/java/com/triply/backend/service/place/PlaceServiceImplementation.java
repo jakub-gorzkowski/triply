@@ -104,6 +104,15 @@ public class PlaceServiceImplementation implements PlaceService {
     }
 
     @Override
+    public Page<PlaceItem> searchPlaces(Long categoryId, String city, Integer offset, Byte size) {
+        return placeRepository.findBySearchCriteria(
+                categoryId,
+                city,
+                PageRequest.of(offset, size)
+        ).map(PlaceMapper::mapToItem);
+    }
+
+    @Override
     @SneakyThrows
     public List<RatingResponse> getRatingsDistribution(Long id) {
         placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);

@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/latest").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/popular").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/reviews").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/search").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/ratings").authenticated();
                     authorize.requestMatchers(HttpMethod.POST, "/api/v1/place/add").authenticated();
                     authorize.requestMatchers(HttpMethod.POST, "/api/v1/review/add").authenticated();

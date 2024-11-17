@@ -93,6 +93,22 @@ public class PlaceController {
         return new ResponseEntity<>(distribution, HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<PlaceItem>> searchPlaces(
+            @RequestParam(name = "category_id", required = false) Long categoryId,
+            @RequestParam(name = "city", required = false) String city,
+            @RequestParam(name = "offset", defaultValue = "0") @Nullable Integer offset,
+            @RequestParam(name = "size", defaultValue = "10") @Nullable Byte size
+    ) {
+        Page<PlaceItem> places = placeService.searchPlaces(categoryId, city, offset, size);
+        Page<PlaceItem> page = new PageImpl<>(
+                places.toList(),
+                PageRequest.of(offset, size),
+                places.getTotalElements()
+        );
+        return ResponseEntity.ok(page);
+    }
+
     @PatchMapping(path = "/update")
     public ResponseEntity<PlaceResponse> updatePlace(
             @RequestParam(value = "id") Long id,

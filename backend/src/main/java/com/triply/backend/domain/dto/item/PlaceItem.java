@@ -20,6 +20,7 @@ public class PlaceItem {
     private String imageUrl;
     private String name;
     private String address;
+    private String category;
     @JsonProperty(value = "added_on")
     private LocalDateTime addedOn;
 }
