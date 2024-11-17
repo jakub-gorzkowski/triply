@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,6 +22,8 @@ public class PlaceItem {
     private String name;
     private String address;
     private String category;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
     @JsonProperty(value = "added_on")
     private LocalDateTime addedOn;
 }

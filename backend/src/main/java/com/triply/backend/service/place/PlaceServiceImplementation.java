@@ -11,9 +11,11 @@ import com.triply.backend.domain.mapper.PlaceMapper;
 import com.triply.backend.domain.mapper.ReviewMapper;
 import com.triply.backend.exception.throwable.CategoryNotFoundException;
 import com.triply.backend.exception.throwable.PlaceNotFoundException;
+import com.triply.backend.exception.throwable.UserNotFoundException;
 import com.triply.backend.repository.CategoryRepository;
 import com.triply.backend.repository.PlaceRepository;
 import com.triply.backend.repository.ReviewRepository;
+import com.triply.backend.service.geocode.GeocodeService;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
@@ -42,17 +44,20 @@ public class PlaceServiceImplementation implements PlaceService {
     private final PlaceRepository placeRepository;
     private final ReviewRepository reviewRepository;
     private final CategoryRepository categoryRepository;
+    private final GeocodeService geocodeService;
     private final Path fileStorageLocation = Paths.get("data/uploads/places").toAbsolutePath().normalize();
 
     @SneakyThrows
     public PlaceServiceImplementation(
             PlaceRepository placeRepository,
             ReviewRepository reviewRepository,
-            CategoryRepository categoryRepository
+            CategoryRepository categoryRepository,
+            GeocodeService geocodeService
     ) {
         this.placeRepository = placeRepository;
         this.reviewRepository = reviewRepository;
         this.categoryRepository = categoryRepository;
+        this.geocodeService = geocodeService;
         Files.createDirectories(this.fileStorageLocation);
     }
 
@@ -145,8 +150,8 @@ public class PlaceServiceImplementation implements PlaceService {
             placeRequest.setImageUrl("/data/uploads/places/" + fileName);
         }
 
-        Category category = categoryRepository.findById(placeRequest.getCategoryId())
-                .orElseThrow(CategoryNotFoundException::new);
+        Category category = placeRequest.getCategoryId() != null ? categoryRepository.findById(placeRequest.getCategoryId())
+                .orElseThrow(CategoryNotFoundException::new) : null;
 
         Place updatedPlace = placeRepository.findById(id).map(existingPlace -> {
             Optional.ofNullable(placeRequest.getAddress()).ifPresent(existingPlace::setAddress);
@@ -157,6 +162,7 @@ public class PlaceServiceImplementation implements PlaceService {
                 deleteImageIfExists(existingPlace.getImageUrl());
                 existingPlace.setImageUrl(placeRequest.getImageUrl());
             });
+            existingPlace.setIsApproved(false);
             return placeRepository.save(existingPlace);
         }).orElseThrow(PlaceNotFoundException::new);
 
@@ -172,6 +178,9 @@ public class PlaceServiceImplementation implements PlaceService {
             Optional.of(LocalDateTime.now()).ifPresent(existingPlace::setAddedOn);
             return placeRepository.save(existingPlace);
         }).orElseThrow(PlaceNotFoundException::new);
+
+        Place place = placeRepository.findById(approvedPlace.getId()).orElseThrow(UserNotFoundException::new);
+        geocodeService.updatePlaceLocation(place);
 
         return PlaceMapper.mapToResponse(approvedPlace);
     }

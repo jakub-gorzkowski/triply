@@ -27,6 +27,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRATION=${JWT_EXPIRATION}
       - JWT_REFRESH=${JWT_REFRESH}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     ports:
       - 8080:8080
     networks:
