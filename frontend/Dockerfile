@@ -6,11 +6,13 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm install --silent
-RUN npm install react-scripts@latest -g --silent
 
-COPY . ./
+RUN npm install --silent --legacy-peer-deps \
+    && npm install -D tailwindcss postcss autoprefixer axios @vitejs/plugin-react \
+    && npx tailwindcss init -p
+
+COPY . .
 
 EXPOSE 5173
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev", "--", "--host"]

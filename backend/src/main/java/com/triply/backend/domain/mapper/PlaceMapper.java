@@ -41,6 +41,8 @@ public class PlaceMapper {
                 .name(place.getName())
                 .address(place.getAddress())
                 .description(place.getDescription())
+                .latitude(place.getLatitude())
+                .longitude(place.getLongitude())
                 .category(place.getCategory().getName())
                 .imageUrl(place.getImageUrl())
                 .addedOn(place.getAddedOn())
