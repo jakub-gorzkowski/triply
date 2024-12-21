@@ -1,0 +1,57 @@
+name: triply
+services:
+  database:
+    container_name: database
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 5555:5432
+    networks:
+      - application-network
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  backend:
+    container_name: backend
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/${POSTGRES_DB}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - JWT_REFRESH=${JWT_REFRESH}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    ports:
+      - 8080:8080
+    networks:
+      - application-network
+    depends_on:
+      - database
+    volumes:
+      - spring-data:/app/data/uploads
+
+  frontend:
+    container_name: frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    depends_on:
+      - backend
+    stdin_open: true
+
+networks:
+  application-network:
+    driver: bridge
+
+volumes:
+  pg-data:
+  spring-data:
