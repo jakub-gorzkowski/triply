@@ -27,12 +27,15 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRATION=${JWT_EXPIRATION}
       - JWT_REFRESH=${JWT_REFRESH}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     ports:
       - 8080:8080
     networks:
       - application-network
     depends_on:
       - database
+    volumes:
+      - spring-data:/app/data/uploads
 
   frontend:
     container_name: frontend
@@ -51,3 +54,4 @@ networks:
 
 volumes:
   pg-data:
+  spring-data:

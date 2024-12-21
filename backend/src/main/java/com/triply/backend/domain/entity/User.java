@@ -1,5 +1,7 @@
 package com.triply.backend.domain.entity;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -37,19 +39,20 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     private String email;
 
     private String username;
 
     private String password;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ToDoList toDoList;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Trip> tripSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Review> reviewSet = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -70,6 +73,10 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public String getRealUsername() {
+        return username;
     }
 
     @Override

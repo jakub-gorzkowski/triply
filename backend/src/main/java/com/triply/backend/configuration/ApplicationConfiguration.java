@@ -1,7 +1,9 @@
 package com.triply.backend.configuration;
 
+import com.google.maps.GeoApiContext;
 import com.triply.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfiguration {
+
+    @Value("${spring.application.google-maps.api-key}")
+    private String apiKey;
 
     private final UserRepository userRepository;
 
@@ -41,5 +46,12 @@ public class ApplicationConfiguration {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public GeoApiContext geoApiContext() {
+        return new GeoApiContext.Builder()
+                .apiKey(apiKey)
+                .build();
     }
 }

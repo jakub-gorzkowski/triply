@@ -3,7 +3,7 @@ package com.triply.backend.controller;
 import com.triply.backend.domain.dto.request.AuthenticationRequest;
 import com.triply.backend.domain.dto.request.RegisterRequest;
 import com.triply.backend.domain.dto.response.AuthenticationResponse;
-import com.triply.backend.service.authentication.AuthenticationServiceImplementation;
+import com.triply.backend.service.authentication.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-    private final AuthenticationServiceImplementation authenticationService;
+    private final AuthenticationService authenticationService;
 
     @PostMapping(path = "/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {

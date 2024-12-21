@@ -29,6 +29,41 @@ public class SecurityConfiguration {
                             "/api/v1/auth/register",
                             "/api/v1/auth/authenticate"
                     ).permitAll();
+
+                    // User endpoints
+                    authorize.requestMatchers(HttpMethod.GET, "/data/uploads/**").authenticated();
+
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/latest").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/popular").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/reviews").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/search").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/ratings").authenticated();
+                    authorize.requestMatchers(HttpMethod.POST, "/api/v1/place/add").authenticated();
+                    authorize.requestMatchers(HttpMethod.POST, "/api/v1/review/add").authenticated();
+
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/user/update").authenticated();
+
+                    authorize.requestMatchers(HttpMethod.POST, "/api/v1/todo/add").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/todo").authenticated();
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/todo/toggle").authenticated();
+
+                    authorize.requestMatchers(HttpMethod.POST, "/api/v1/trip/add").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/upcoming").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/past").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/next").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/places").authenticated();
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/trip/update").authenticated();
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/trip/add-place").authenticated();
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/trip/remove-place").authenticated();
+                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/trip/remove").authenticated();
+
+                    // Admin endpoints
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/update").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/unapproved").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/approve").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/place/remove").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/review/remove").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/user/delete").hasRole("ADMIN");
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
