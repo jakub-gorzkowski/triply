@@ -95,6 +95,12 @@ public class PlaceServiceImplementation implements PlaceService {
     }
 
     @Override
+    public Page<PlaceItem> getUnapprovedPlaces(Integer offset, Byte size) {
+        return placeRepository.findByIsApprovedFalseOrderByAddedOnAsc(PageRequest.of(offset, size))
+                .map(PlaceMapper::mapToItem);
+    }
+
+    @Override
     public Page<PlaceItem> getPopularPlaces(Integer offset, Byte size) {
         return placeRepository.findAllApprovedOrderByReviewCountDesc(PageRequest.of(offset, size))
                 .map(PlaceMapper::mapToItem);

@@ -14,6 +14,7 @@ import java.util.List;
 public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     Page<Place> findByIsApprovedTrueOrderByAddedOnDesc(Pageable pageable);
+    Page<Place> findByIsApprovedFalseOrderByAddedOnAsc(Pageable pageable);
     @Query("SELECT p FROM Place p LEFT JOIN p.reviewSet r WHERE p.isApproved = true GROUP BY p ORDER BY COUNT(r) DESC")
     Page<Place> findAllApprovedOrderByReviewCountDesc(Pageable pageable);
 

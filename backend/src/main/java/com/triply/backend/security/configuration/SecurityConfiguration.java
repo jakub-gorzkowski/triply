@@ -58,13 +58,12 @@ public class SecurityConfiguration {
                     authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/trip/remove").authenticated();
 
                     // Admin endpoints
-                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/update").authenticated();
-                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/approve").authenticated();
-                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/place/remove").authenticated();
-
-                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/review/remove").authenticated();
-
-                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/user/delete").authenticated();
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/update").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/unapproved").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/place/approve").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/place/remove").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/review/remove").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/user/delete").hasRole("ADMIN");
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

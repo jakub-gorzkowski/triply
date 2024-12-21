@@ -58,6 +58,20 @@ public class PlaceController {
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/unapproved")
+    public ResponseEntity<Page<PlaceItem>> getUnapproved(
+            @RequestParam(name = "offset", defaultValue = "0") @Nullable Integer offset,
+            @RequestParam(name = "size", defaultValue = "10") @Nullable Byte size
+    ) {
+        Page<PlaceItem> places = placeService.getUnapprovedPlaces(offset, size);
+        Page<PlaceItem> page = new PageImpl<>(
+                places.toList(),
+                PageRequest.of(offset, size),
+                places.getTotalElements()
+        );
+        return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/popular")
     public ResponseEntity<Page<PlaceItem>> getPopular(
             @RequestParam(name = "offset", defaultValue = "0") @Nullable Integer offset,
