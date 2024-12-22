@@ -8,7 +8,7 @@ COPY package.json ./
 COPY package-lock.json ./
 
 RUN npm install --silent --legacy-peer-deps \
-    && npm install -D tailwindcss postcss autoprefixer axios @vitejs/plugin-react \
+    && npm install -D tailwindcss postcss autoprefixer axios @vitejs/plugin-react react-router-dom \
     && npx tailwindcss init -p
 
 COPY . .
