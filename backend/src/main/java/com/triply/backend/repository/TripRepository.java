@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 public interface TripRepository extends JpaRepository<Trip, Long> {
-    Page<Trip> findByUserAndEndDateAfter(User user, LocalDate date, Pageable pageable);
+    Page<Trip> findByUserAndEndDateAfterOrderByEndDateAsc(User user, LocalDate date, Pageable pageable);
 
     Page<Trip> findByUserAndEndDateBefore(User user, LocalDate date, Pageable pageable);
 

@@ -19,7 +19,7 @@ const Place = () => {
 
     return (
         <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
-            <Sidebar/>
+            <Sidebar currentPage='places'/>
             <div className="flex-1 px-4">
                 <div className="max-w-6xl mx-auto">
                     <PlaceHeader/>

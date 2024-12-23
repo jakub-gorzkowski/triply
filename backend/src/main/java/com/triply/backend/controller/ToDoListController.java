@@ -47,7 +47,7 @@ public class ToDoListController {
         Page<TaskResponse> page = new PageImpl<>(
                 tasks.toList(),
                 PageRequest.of(offset, size),
-                tasks.getTotalPages()
+                tasks.getTotalElements()
         );
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
