@@ -6,6 +6,7 @@ import PrivateRoutes from "./component/route/PrivateRoutes.jsx";
 import Place from "./component/place/Place.jsx";
 import Home from "./component/hub/Home.jsx";
 import Trips from "./component/trips/Trips.jsx";
+import AccountSettings from "./component/settings/AccountSettings.jsx";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Route path={'/'} element={<Home/>}/>
                     <Route path={'/trips'} element={<Trips/>}/>
                     <Route path={'/place'} element={<Place/>}/>
+                    <Route path={'/settings'} element={<AccountSettings/>}/>
                 </Route>
             </Routes>
         </>
