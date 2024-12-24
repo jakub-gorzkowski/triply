@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthenticationService from '../service/AuthenticationService';
-import Sidebar from '../general/Sidebar.jsx';
-import TodoList from './ToDoList.jsx';
-import TripsList from "../general/TripsList.jsx";
+import Sidebar from '../general/Sidebar';
+import TripsList from '../general/TripsList.jsx';
 
-const Home = () => {
+const Trips = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,19 +17,17 @@ const Home = () => {
 
     return (
         <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
-            <Sidebar currentPage='home'/>
+            <Sidebar currentPage='trips' />
             <div className="flex-1 px-4">
-                <div className="max-w-6xl mx-auto pt-12">
-                    <div className="mb-8">
-                        <h1 className="text-2xl font-bold text-gray-900">Welcome back!</h1>
+                <div className="max-w-6xl mx-auto space-y-12 pt-12">
+                    <div>
+                        <h2 className="text-xl font-bold text-gray-900 mb-6">Ongoing trips</h2>
+                        <TripsList />
                     </div>
 
-                    <div className="mb-8">
-                        <TripsList count={4} />
-                    </div>
-
-                    <div className="mb-8">
-                        <TodoList />
+                    <div>
+                        <h2 className="text-xl font-bold text-gray-900 mb-6">Past trips</h2>
+                        <TripsList isPast />
                     </div>
                 </div>
             </div>
@@ -38,4 +35,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Trips;

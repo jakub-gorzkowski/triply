@@ -21,7 +21,7 @@ const Place = () => {
         <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
             <Sidebar currentPage='places'/>
             <div className="flex-1 px-4">
-                <div className="max-w-6xl mx-auto">
+                <div className="max-w-6xl mx-auto pt-12">
                     <PlaceHeader/>
                     <div className="flex gap-8">
                         <div className="flex-1">

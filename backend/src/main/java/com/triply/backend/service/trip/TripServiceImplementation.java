@@ -51,7 +51,7 @@ public class TripServiceImplementation implements TripService {
 
     @Override
     public Page<TripResponse> getPastTrips(User user, Integer offset, Byte size) {
-        return tripRepository.findByUserAndEndDateBefore(user, LocalDate.now(), PageRequest.of(offset, size))
+        return tripRepository.findByUserAndEndDateBeforeOrderByEndDateDesc(user, LocalDate.now(), PageRequest.of(offset, size))
                 .map(TripMapper::mapToResponse);
     }
 

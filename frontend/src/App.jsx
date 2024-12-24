@@ -5,6 +5,7 @@ import Login from "./component/authentication/Login.jsx";
 import PrivateRoutes from "./component/route/PrivateRoutes.jsx";
 import Place from "./component/place/Place.jsx";
 import Home from "./component/hub/Home.jsx";
+import Trips from "./component/trips/Trips.jsx";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                 </Route>
                 <Route element={<PrivateRoutes/>}>
                     <Route path={'/'} element={<Home/>}/>
+                    <Route path={'/trips'} element={<Trips/>}/>
                     <Route path={'/place'} element={<Place/>}/>
                 </Route>
             </Routes>
