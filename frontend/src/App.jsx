@@ -7,6 +7,7 @@ import Place from "./component/place/Place.jsx";
 import Home from "./component/hub/Home.jsx";
 import Trips from "./component/trips/Trips.jsx";
 import AccountSettings from "./component/settings/AccountSettings.jsx";
+import Trip from "./component/trip/Trip.jsx";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                 </Route>
                 <Route element={<PrivateRoutes/>}>
                     <Route path={'/'} element={<Home/>}/>
+                    <Route path={'/trip'} element={<Trip/>}/>
                     <Route path={'/trips'} element={<Trips/>}/>
                     <Route path={'/place'} element={<Place/>}/>
                     <Route path={'/settings'} element={<AccountSettings/>}/>

@@ -23,7 +23,6 @@ const CreateTripModal = ({ isOpen, onClose, onTripCreated }) => {
         const auth = AuthenticationService.getCurrentUser();
         if (!auth) return;
 
-        // Basic validation
         if (!formData.name.trim() || !formData.startDate || !formData.endDate) {
             setError('Please fill in all required fields');
             return;
@@ -51,7 +50,6 @@ const CreateTripModal = ({ isOpen, onClose, onTripCreated }) => {
             );
 
             if (response.data) {
-                // Reset form
                 setFormData({
                     name: '',
                     startDate: '',
@@ -59,7 +57,6 @@ const CreateTripModal = ({ isOpen, onClose, onTripCreated }) => {
                     photo: null
                 });
 
-                // Notify parent component about successful creation
                 if (onTripCreated) {
                     onTripCreated(response.data);
                 }
