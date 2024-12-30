@@ -20,10 +20,12 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     @Query("SELECT p FROM Place p WHERE " +
             "(:categoryId IS NULL OR p.category.id = :categoryId) AND " +
-            "(:city IS NULL OR LOWER(p.address) LIKE LOWER(CONCAT('%', :city, '%')))")
+            "(:city IS NULL OR LOWER(p.address) LIKE LOWER(CONCAT('%', :city, '%'))) AND " +
+            "p.isApproved = true")
     Page<Place> findBySearchCriteria(
             @Param("categoryId") Long categoryId,
             @Param("city") String city,
             Pageable pageable
     );
+
 }

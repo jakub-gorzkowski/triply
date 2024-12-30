@@ -8,6 +8,7 @@ import Home from "./component/hub/Home.jsx";
 import Trips from "./component/trips/Trips.jsx";
 import AccountSettings from "./component/settings/AccountSettings.jsx";
 import Trip from "./component/trip/Trip.jsx";
+import Places from "./component/places/Places.jsx";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                     <Route path={'/trip'} element={<Trip/>}/>
                     <Route path={'/trips'} element={<Trips/>}/>
                     <Route path={'/place'} element={<Place/>}/>
+                    <Route path={'/places'} element={<Places/>}/>
                     <Route path={'/settings'} element={<AccountSettings/>}/>
                 </Route>
             </Routes>
