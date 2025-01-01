@@ -1,12 +1,70 @@
 import { Plus } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
+import axios from 'axios';
+import AuthenticationService from '../service/AuthenticationService';
 
-function PlaceHeader() {
+const API_BASE_URL = 'http://localhost:8080';
+
+const mapContainerStyle = {
+    width: '100%',
+    height: '100%',
+    borderRadius: '0.5rem'
+};
+
+function PlaceHeader({ place }) {
+    const [imageBlob, setImageBlob] = useState(null);
+    const [coordinates, setCoordinates] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (!place?.image_url) return;
+
+        const fetchImage = async () => {
+            const auth = AuthenticationService.getCurrentUser();
+            if (!auth) return;
+
+            try {
+                const fileName = place.image_url.split('/').pop();
+                const response = await axios.get(`${API_BASE_URL}/data/uploads/places/${fileName}`, {
+                    responseType: 'blob',
+                    headers: {
+                        'Authorization': `Bearer ${auth.token}`
+                    }
+                });
+
+                const imageUrl = URL.createObjectURL(response.data);
+                setImageBlob(imageUrl);
+            } catch (err) {
+                console.error('Error loading image:', err);
+            }
+        };
+
+        fetchImage();
+
+        if (place?.latitude && place?.longitude) {
+            setCoordinates({
+                lat: place.latitude,
+                lng: place.longitude
+            });
+            setIsLoading(false);
+        }
+
+        return () => {
+            if (imageBlob) {
+                URL.revokeObjectURL(imageBlob);
+            }
+        };
+    }, [place?.image_url, place?.latitude, place?.longitude]);
+
+    if (!place) return null;
+
     return (
         <>
             <div className="flex justify-between items-start mb-8">
                 <div>
-                    <h2 className="text-2xl font-bold text-gray-900">Name</h2>
-                    <p className="text-teal-600">Address</p>
+                    <h2 className="text-2xl font-bold text-gray-900">{place.name}</h2>
+                    <p className="text-teal-600">{place.address}</p>
                 </div>
                 <button className="p-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 shadow-sm transition-colors">
                     <Plus className="w-5 h-5"/>
@@ -14,36 +72,45 @@ function PlaceHeader() {
             </div>
 
             <div className="grid grid-cols-2 gap-6 mb-8">
-                <div
-                    className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:border-rose-200 transition-colors group">
-                    <div className="w-32 h-32 mx-auto my-auto mb-4">
-                        <img
-                            src="https://placehold.co/480x480"
-                            alt="Place"
-                            className="w-full h-full object-cover rounded-lg"
-                        />
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 hover:border-rose-200 transition-colors group overflow-hidden">
+                    <div className="aspect-video w-full h-full">
+                        {imageBlob ? (
+                            <img
+                                src={imageBlob}
+                                alt={place.name}
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                                <span className="text-gray-400">No image available</span>
+                            </div>
+                        )}
                     </div>
                 </div>
-                <div
-                    className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:border-rose-200 transition-colors">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345.67890!2d-74.0060!3d40.7128!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM40zMCc0Ni4xIk4gNzTCsDAwJzIxLjYiVw!5e0!3m2!1sen!2sus!4v1234567890"
-                        className="w-full h-48 rounded-lg border-0"
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                    />
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 hover:border-rose-200 transition-colors overflow-hidden">
+                    <div className="aspect-video w-full h-full">
+                        {!isLoading && (
+                            <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_API_KEY}>
+                                <GoogleMap
+                                    mapContainerStyle={mapContainerStyle}
+                                    center={coordinates || { lat: 0, lng: 0 }}
+                                    zoom={18}
+                                >
+                                    {coordinates && (
+                                        <MarkerF position={coordinates} />
+                                    )}
+                                </GoogleMap>
+                            </LoadScript>
+                        )}
+                    </div>
                 </div>
             </div>
 
             <div className="mb-8 text-gray-600 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                mollit anim id est laborum.
+                {place.description || 'No description available.'}
             </div>
         </>
-    )
+    );
 }
 
 export default PlaceHeader;

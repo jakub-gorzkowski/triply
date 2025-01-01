@@ -9,6 +9,7 @@ COPY package-lock.json ./
 
 RUN npm install --silent --legacy-peer-deps \
     && npm install -D tailwindcss postcss autoprefixer axios @vitejs/plugin-react react-router-dom \
+    && npm install @react-google-maps/api \
     && npx tailwindcss init -p
 
 COPY . .

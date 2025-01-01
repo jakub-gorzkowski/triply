@@ -69,8 +69,8 @@ const PlacesList = ({ type }) => {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {places.map((place, index) => (
-                <PlaceCard key={index} {...place} />
+            {places.map((place) => (
+                <PlaceCard key={place.id} {...place} />
             ))}
         </div>
     );

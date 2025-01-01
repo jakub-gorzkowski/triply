@@ -25,6 +25,7 @@ public class PlaceMapper {
 
     public static PlaceItem mapToItem(Place place) {
         return PlaceItem.builder()
+                .id(place.getId())
                 .name(place.getName())
                 .imageUrl(place.getImageUrl())
                 .address(place.getAddress())

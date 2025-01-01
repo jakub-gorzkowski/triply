@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthenticationService from '../service/AuthenticationService';
 
 const API_BASE_URL = 'http://localhost:8080';
 
-const PlaceCard = ({ name, address, category, image_url }) => {
+const PlaceCard = ({ id, name, address, category, image_url }) => {
+    const navigate = useNavigate();
     const [imageLoading, setImageLoading] = useState(true);
     const [imageError, setImageError] = useState(false);
     const [imageBlob, setImageBlob] = useState(null);
@@ -52,8 +54,15 @@ const PlaceCard = ({ name, address, category, image_url }) => {
         };
     }, [image_url]);
 
+    const handleClick = () => {
+        navigate(`/place/${id}`);
+    };
+
     return (
-        <div className="bg-white rounded-xl border border-gray-100 hover:border-rose-200 transition-colors cursor-pointer group overflow-hidden">
+        <div
+            onClick={handleClick}
+            className="bg-white rounded-xl border border-gray-100 hover:border-rose-200 transition-colors cursor-pointer group overflow-hidden"
+        >
             <div className="aspect-video w-full bg-gray-100 relative">
                 {imageLoading ? (
                     <div className="absolute inset-0 flex items-center justify-center">
