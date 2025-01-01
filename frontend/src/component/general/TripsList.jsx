@@ -4,11 +4,14 @@ import axios from 'axios';
 import AuthenticationService from '../service/AuthenticationService';
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';
+const PAGE_SIZE = 8;
 
-const TripsList = ({ count, isPast = false }) => {
+const TripsList = ({ count, isPast = false, selectedTripId, onTripSelect }) => {
     const [trips, setTrips] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
     const formatDate = (dateArray) => {
         const [year, month, day] = dateArray;
@@ -23,21 +26,28 @@ const TripsList = ({ count, isPast = false }) => {
         const auth = AuthenticationService.getCurrentUser();
         if (!auth) return;
         fetchTrips(auth.token);
-    }, [count, isPast]);
+    }, [currentPage, isPast]);
 
     const fetchTrips = async (token) => {
         try {
             setIsLoading(true);
             const response = await axios.get(`${API_BASE_URL}/trip/${isPast ? 'past' : 'upcoming'}`, {
                 params: {
-                    offset: 0,
-                    size: count
+                    offset: currentPage,
+                    size: PAGE_SIZE
                 },
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
+
+            if (response.data.content.length === 0 && currentPage > 0) {
+                setCurrentPage(prev => prev - 1);
+                return;
+            }
+
             setTrips(response.data.content);
+            setTotalPages(Math.ceil(response.data.totalElements / PAGE_SIZE));
             setError(null);
         } catch (err) {
             setError(`Failed to load ${isPast ? 'past' : 'upcoming'} trips`);
@@ -47,28 +57,48 @@ const TripsList = ({ count, isPast = false }) => {
         }
     };
 
+    if (isLoading) {
+        return (
+            <div className="col-span-full flex items-center justify-center h-48">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="col-span-full p-4 bg-red-50 text-red-600 rounded-lg">
+                {error}
+            </div>
+        );
+    }
+
+    if (trips.length === 0) {
+        return (
+            <div className="col-span-full text-center text-gray-500 py-12">
+                No {isPast ? 'past' : 'ongoing'} trips found.
+            </div>
+        );
+    }
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {isLoading ? (
-                <div className="col-span-full flex items-center justify-center h-48">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500"></div>
-                </div>
-            ) : error ? (
-                <div className="col-span-full p-4 bg-red-50 text-red-600 rounded-lg">
-                    {error}
-                </div>
-            ) : trips.length === 0 ? (
-                <div className="col-span-full text-center text-gray-500 py-12">
-                    No {isPast ? 'past' : 'ongoing'} trips found.
-                </div>
-            ) : (
-                trips.map((trip, index) => (
+        <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {trips.map((trip) => (
                     <div
-                        key={trip.id || index}
-                        className="bg-white rounded-xl p-6 border border-gray-100 hover:border-rose-200 transition-colors cursor-pointer group"
+                        key={trip.id}
+                        onClick={() => onTripSelect?.(trip.id)}
+                        className={`bg-white rounded-xl p-6 border transition-colors cursor-pointer group
+                            ${selectedTripId === trip.id
+                            ? 'border-rose-500 bg-rose-50'
+                            : 'border-gray-100 hover:border-rose-200'}`}
                     >
                         <div className="mb-4">
-                            <div className="w-12 h-12 bg-sky-50 rounded-lg flex items-center justify-center group-hover:bg-sky-100 transition-colors">
+                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors
+                                ${selectedTripId === trip.id
+                                ? 'bg-rose-100'
+                                : 'bg-sky-50 group-hover:bg-sky-100'}`}
+                            >
                                 <TreePalm className="w-6 h-6 text-green-600" />
                             </div>
                         </div>
@@ -86,7 +116,25 @@ const TripsList = ({ count, isPast = false }) => {
                             </div>
                         </div>
                     </div>
-                ))
+                ))}
+            </div>
+
+            {totalPages > 1 && (
+                <div className="flex justify-center gap-1 pt-4">
+                    {[...Array(totalPages)].map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setCurrentPage(index)}
+                            className={`px-3 py-1 rounded-md transition-colors ${
+                                currentPage === index
+                                    ? 'bg-rose-500 text-white'
+                                    : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                </div>
             )}
         </div>
     );

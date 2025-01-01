@@ -26,7 +26,7 @@ function ReviewList({ placeId, refreshTrigger }) {
                 params: {
                     id: placeId,
                     offset: pageNumber,
-                    size: 10
+                    size: 4
                 },
                 headers: { 'Authorization': `Bearer ${auth.token}` }
             });
@@ -37,7 +37,7 @@ function ReviewList({ placeId, refreshTrigger }) {
                 setReviews(prev => [...prev, ...response.data.content]);
             }
 
-            setHasMore(response.data.content.length === 10);
+            setHasMore(response.data.content.length === 4);
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to load reviews');
         } finally {

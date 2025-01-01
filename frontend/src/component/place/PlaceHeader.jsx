@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import axios from 'axios';
 import AuthenticationService from '../service/AuthenticationService';
+import AddToTripModal from './AddToTripModal';
 
 const API_BASE_URL = 'http://localhost:8080';
 
@@ -16,6 +17,7 @@ function PlaceHeader({ place }) {
     const [imageBlob, setImageBlob] = useState(null);
     const [coordinates, setCoordinates] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if (!place?.image_url) return;
@@ -66,7 +68,10 @@ function PlaceHeader({ place }) {
                     <h2 className="text-2xl font-bold text-gray-900">{place.name}</h2>
                     <p className="text-teal-600">{place.address}</p>
                 </div>
-                <button className="p-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 shadow-sm transition-colors">
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="p-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 shadow-sm transition-colors"
+                >
                     <Plus className="w-5 h-5"/>
                 </button>
             </div>
@@ -109,6 +114,12 @@ function PlaceHeader({ place }) {
             <div className="mb-8 text-gray-600 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 {place.description || 'No description available.'}
             </div>
+
+            <AddToTripModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                placeId={place.id}
+            />
         </>
     );
 }
