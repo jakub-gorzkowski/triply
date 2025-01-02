@@ -22,6 +22,7 @@ public class ReviewMapper {
 
     public static ReviewItem mapToItem(Review review) {
         return ReviewItem.builder()
+                .id(review.getId())
                 .username(review.getUser().getRealUsername())
                 .rating(review.getRating())
                 .content(review.getContent())

@@ -1,9 +1,11 @@
-import { Plus } from 'lucide-react';
+import { Plus, Pencil, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import axios from 'axios';
 import AuthenticationService from '../service/AuthenticationService';
 import AddToTripModal from './AddToTripModal';
+import UpdatePlaceModal from '../administration/UpdatePlaceModal';
 
 const API_BASE_URL = 'http://localhost:8080';
 
@@ -14,10 +16,14 @@ const mapContainerStyle = {
 };
 
 function PlaceHeader({ place }) {
+    const navigate = useNavigate();
     const [imageBlob, setImageBlob] = useState(null);
     const [coordinates, setCoordinates] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const auth = AuthenticationService.getCurrentUser();
+    const isAdmin = auth?.token ? JSON.parse(atob(auth.token.split('.')[1])).roles?.includes('ROLE_ADMIN') : false;
 
     useEffect(() => {
         if (!place?.image_url) return;
@@ -59,6 +65,18 @@ function PlaceHeader({ place }) {
         };
     }, [place?.image_url, place?.latitude, place?.longitude]);
 
+    const handleRemove = async () => {
+        try {
+            await axios.delete(`${API_BASE_URL}/api/v1/place/remove`, {
+                params: { id: place.id },
+                headers: { 'Authorization': `Bearer ${auth.token}` }
+            });
+            navigate('/places');
+        } catch (err) {
+            console.error('Error removing place:', err);
+        }
+    };
+
     if (!place) return null;
 
     return (
@@ -68,12 +86,30 @@ function PlaceHeader({ place }) {
                     <h2 className="text-2xl font-bold text-gray-900">{place.name}</h2>
                     <p className="text-teal-600">{place.address}</p>
                 </div>
-                <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="p-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 shadow-sm transition-colors"
-                >
-                    <Plus className="w-5 h-5"/>
-                </button>
+                <div className="flex items-center">
+                    {isAdmin && (
+                        <div className="flex gap-2 mr-8">
+                            <button
+                                onClick={handleRemove}
+                                className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 shadow-sm transition-colors"
+                            >
+                                <X className="w-5 h-5"/>
+                            </button>
+                            <button
+                                onClick={() => setIsEditModalOpen(true)}
+                                className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 shadow-sm transition-colors"
+                            >
+                                <Pencil className="w-5 h-5"/>
+                            </button>
+                        </div>
+                    )}
+                    <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="p-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 shadow-sm transition-colors"
+                    >
+                        <Plus className="w-5 h-5"/>
+                    </button>
+                </div>
             </div>
 
             <div className="grid grid-cols-2 gap-6 mb-8">
@@ -116,10 +152,19 @@ function PlaceHeader({ place }) {
             </div>
 
             <AddToTripModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
                 placeId={place.id}
             />
+
+            {isAdmin && (
+                <UpdatePlaceModal
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onPlaceUpdated={() => window.location.reload()}
+                    place={place}
+                />
+            )}
         </>
     );
 }
