@@ -21,6 +21,7 @@ public class PlaceItem {
     @JsonProperty(value = "image_url")
     private String imageUrl;
     private String name;
+    private String description;
     private String address;
     private String category;
     private BigDecimal latitude;
