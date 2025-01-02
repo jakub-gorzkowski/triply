@@ -71,6 +71,7 @@ const AddToTripModal = ({ isOpen, onClose, placeId }) => {
                         isPast={false}
                         selectedTripId={selectedTripId}
                         onTripSelect={(tripId) => setSelectedTripId(tripId)}
+                        isModal={true}
                     />
                 </div>
 

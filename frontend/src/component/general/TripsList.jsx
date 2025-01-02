@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { TreePalm } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthenticationService from '../service/AuthenticationService';
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';
 const PAGE_SIZE = 8;
 
-const TripsList = ({ count, isPast = false, selectedTripId, onTripSelect }) => {
+const TripsList = ({ count, isPast = false, selectedTripId, onTripSelect, isModal = false }) => {
+    const navigate = useNavigate();
     const [trips, setTrips] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -57,6 +59,14 @@ const TripsList = ({ count, isPast = false, selectedTripId, onTripSelect }) => {
         }
     };
 
+    const handleTripClick = (tripId) => {
+        if (isModal) {
+            onTripSelect?.(tripId);
+        } else {
+            navigate(`/trip/${tripId}`);
+        }
+    };
+
     if (isLoading) {
         return (
             <div className="col-span-full flex items-center justify-center h-48">
@@ -87,15 +97,15 @@ const TripsList = ({ count, isPast = false, selectedTripId, onTripSelect }) => {
                 {trips.map((trip) => (
                     <div
                         key={trip.id}
-                        onClick={() => onTripSelect?.(trip.id)}
+                        onClick={() => handleTripClick(trip.id)}
                         className={`bg-white rounded-xl p-6 border transition-colors cursor-pointer group
-                            ${selectedTripId === trip.id
+                            ${selectedTripId === trip.id && isModal
                             ? 'border-rose-500 bg-rose-50'
                             : 'border-gray-100 hover:border-rose-200'}`}
                     >
                         <div className="mb-4">
                             <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors
-                                ${selectedTripId === trip.id
+                                ${selectedTripId === trip.id && isModal
                                 ? 'bg-rose-100'
                                 : 'bg-sky-50 group-hover:bg-sky-100'}`}
                             >

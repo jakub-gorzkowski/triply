@@ -20,7 +20,7 @@ function App() {
                 </Route>
                 <Route element={<PrivateRoutes/>}>
                     <Route path={'/'} element={<Home/>}/>
-                    <Route path={'/trip'} element={<Trip/>}/>
+                    <Route path={'/trip/:id'} element={<Trip/>}/>
                     <Route path={'/trips'} element={<Trips/>}/>
                     <Route path={'/place/:id'} element={<Place/>}/>
                     <Route path={'/places'} element={<Places/>}/>

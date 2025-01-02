@@ -44,6 +44,12 @@ public class TripServiceImplementation implements TripService {
     }
 
     @Override
+    @SneakyThrows
+    public Trip getTripById(Long id) {
+        return tripRepository.findById(id).orElseThrow(TripNotFoundException::new);
+    }
+
+    @Override
     public Page<TripResponse> getUpcomingTrips(User user, Integer offset, Byte size) {
         return tripRepository.findByUserAndEndDateGreaterThanEqualOrderByEndDateAsc(user, LocalDate.now(), PageRequest.of(offset, size))
                 .map(TripMapper::mapToResponse);
