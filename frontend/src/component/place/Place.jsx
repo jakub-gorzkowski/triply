@@ -51,9 +51,9 @@ const Place = () => {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen bg-gray-50 overflow-hidden">
+            <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
                 <Sidebar currentPage='places'/>
-                <div className="flex-1 w-full overflow-x-hidden flex items-center justify-center">
+                <div className="flex-1 flex items-center justify-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500"></div>
                 </div>
             </div>
@@ -62,9 +62,9 @@ const Place = () => {
 
     if (error) {
         return (
-            <div className="flex min-h-screen bg-gray-50 overflow-hidden">
+            <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
                 <Sidebar currentPage='places'/>
-                <div className="flex-1 w-full overflow-x-hidden flex items-center justify-center">
+                <div className="flex-1 flex items-center justify-center">
                     <div className="p-4 bg-red-50 text-red-600 rounded-lg">
                         {error}
                     </div>
@@ -74,16 +74,16 @@ const Place = () => {
     }
 
     return (
-        <div className="flex min-h-screen bg-gray-50 overflow-hidden">
+        <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
             <Sidebar currentPage='places'/>
-            <div className="flex-1 w-full overflow-x-hidden">
-                <div className="fixed top-0 left-0 right-0 z-50 md:hidden bg-white shadow-sm">
+            <div className="flex-1 relative overflow-x-hidden">
+                <div className="fixed top-0 left-0 w-full z-50 md:hidden bg-white shadow-sm">
                     <div className="px-4 py-4">
                         <h1 className="text-2xl font-bold text-gray-900">Triply</h1>
                     </div>
                 </div>
 
-                <div className="max-w-6xl mx-auto px-4 pt-20 pb-24">
+                <div className="max-w-6xl mx-auto pt-20 md:pt-12">
                     <PlaceHeader place={placeData} />
                     <div className="flex flex-col md:flex-row gap-8">
                         <div className="flex-1 order-2 md:order-1">

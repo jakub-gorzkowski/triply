@@ -125,8 +125,13 @@ const AccountSettings = () => {
     return (
         <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
             <Sidebar currentPage="settings" />
-            <div className="flex-1 px-4">
-                <div className="max-w-2xl mx-auto pt-12">
+            <div className="flex-1 relative overflow-x-hidden">
+                <div className="fixed top-0 left-0 w-full z-50 md:hidden bg-white shadow-sm">
+                    <div className="px-4 py-4">
+                        <h1 className="text-2xl font-bold text-gray-900">Triply</h1>
+                    </div>
+                </div>
+                <div className="max-w-2xl mx-auto pt-20 pb-12">
                     <h2 className="text-2xl font-bold text-gray-900 mb-8">Account settings</h2>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-4">
@@ -189,7 +194,7 @@ const AccountSettings = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex justify-center md:justify-start gap-4">
                             <button
                                 type="submit"
                                 disabled={!Object.values(touchedFields).some(Boolean)}

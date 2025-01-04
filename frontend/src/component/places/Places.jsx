@@ -64,26 +64,26 @@ const Places = () => {
     const showSearchResults = searchResults !== null;
 
     return (
-        <div className="flex min-h-screen bg-gray-50 overflow-hidden p-4 gap-4">
-            <Sidebar currentPage="places" />
-            <div className="flex-1 w-full overflow-x-hidden">
-                <div className="fixed top-0 left-0 right-0 z-50 md:hidden bg-white shadow-sm">
+        <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
+            <Sidebar currentPage="places"/>
+            <div className="flex-1 relative overflow-x-hidden">
+                <div className="fixed top-0 left-0 w-full z-50 md:hidden bg-white shadow-sm">
                     <div className="px-4 py-4">
                         <h1 className="text-2xl font-bold text-gray-900">Triply</h1>
                     </div>
                 </div>
 
-                <div className="max-w-6xl mx-auto px-4 pt-20 pb-24">
-                    <div className="flex justify-center items-center gap-4 overflow-x-auto">
-                        <div className="flex items-center gap-3 w-full">
+                <div className="max-w-6xl mx-auto pt-20 md:pt-12">
+                    <div className="flex flex-col md:flex-row justify-center items-center gap-3 md:gap-0">
+                        <div className="w-full md:w-auto">
                             <SearchBar onSearch={handleSearch} />
-                            <button
-                                onClick={() => setIsModalOpen(true)}
-                                className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors flex-shrink-0"
-                            >
-                                <Plus className="w-5 h-5" />
-                            </button>
                         </div>
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors md:ml-3"
+                        >
+                            <Plus className="w-5 h-5" />
+                        </button>
                     </div>
 
                     {showSearchResults ? (

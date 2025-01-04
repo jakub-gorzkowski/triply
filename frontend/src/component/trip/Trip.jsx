@@ -100,8 +100,14 @@ const Trip = () => {
     return (
         <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
             <Sidebar currentPage="trips"/>
-            <div className="flex-1 px-4">
-                <div className="max-w-6xl mx-auto pt-12">
+            <div className="flex-1 relative overflow-x-hidden">
+                <div className="fixed top-0 left-0 right-0 z-50 md:hidden bg-white shadow-sm">
+                    <div className="px-4 py-4">
+                        <h1 className="text-2xl font-bold text-gray-900">Triply</h1>
+                    </div>
+                </div>
+
+                <div className="max-w-6xl mx-auto px-4 pt-20 pb-24">
                     {tripData && (
                         <>
                             <TripHeader

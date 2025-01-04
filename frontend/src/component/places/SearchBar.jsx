@@ -83,7 +83,7 @@ const SearchBar = ({ onSearch }) => {
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <input
                         type="text"
-                        placeholder="Search by city..."
+                        placeholder="Search"
                         className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-rose-300 focus:ring-1 focus:ring-rose-300 outline-none transition-colors"
                         value={searchQuery}
                         onChange={(e) => handleSearchChange(e.target.value)}

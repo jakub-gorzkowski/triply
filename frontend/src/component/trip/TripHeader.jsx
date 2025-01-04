@@ -145,13 +145,13 @@ function TripHeader({ trip, onDelete, refreshTrigger, selectedPlaceId }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 mb-8">
-                <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
+                <div className="grid grid-cols-2 gap-2 md:gap-4">
                     {placeImages.length > 0 ? (
                         placeImages.map((image, index) => (
                             <div
                                 key={image.id}
-                                className="bg-white rounded-xl shadow-sm border border-gray-100 hover:border-rose-200 transition-colors group overflow-hidden"
+                                className="bg-white rounded-lg md:rounded-xl shadow-sm border border-gray-100 hover:border-rose-200 transition-colors group overflow-hidden"
                             >
                                 <div className="aspect-video w-full h-full">
                                     <img
@@ -166,7 +166,7 @@ function TripHeader({ trip, onDelete, refreshTrigger, selectedPlaceId }) {
                         Array.from({ length: 4 }).map((_, index) => (
                             <div
                                 key={index}
-                                className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+                                className="bg-white rounded-lg md:rounded-xl shadow-sm border border-gray-100 overflow-hidden"
                             >
                                 <div className="aspect-video w-full flex items-center justify-center bg-gray-100">
                                     <span className="text-gray-400">No image</span>
@@ -175,7 +175,7 @@ function TripHeader({ trip, onDelete, refreshTrigger, selectedPlaceId }) {
                         ))
                     )}
                 </div>
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 hover:border-rose-200 transition-colors overflow-hidden">
+                <div className="bg-white rounded-lg md:rounded-xl shadow-sm border border-gray-100 hover:border-rose-200 transition-colors overflow-hidden">
                     <div className="aspect-video w-full h-full">
                         {!isLoading && places.length > 0 ? (
                             <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_API_KEY}>

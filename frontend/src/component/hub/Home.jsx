@@ -17,7 +17,7 @@ const Home = () => {
     }, [navigate]);
 
     return (
-        <div className="flex min-h-screen bg-gray-50 overflow-hidden p-4 gap-4">
+        <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
             <Sidebar currentPage='home'/>
             <div className="flex-1 relative overflow-x-hidden">
                 <div className="fixed top-0 left-0 w-full z-50 md:hidden bg-white shadow-sm">
