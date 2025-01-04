@@ -93,33 +93,33 @@ const TripsList = ({ count, isPast = false, selectedTripId, onTripSelect, isModa
 
     return (
         <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {trips.map((trip) => (
                     <div
                         key={trip.id}
                         onClick={() => handleTripClick(trip.id)}
-                        className={`bg-white rounded-xl p-6 border transition-colors cursor-pointer group
-                            ${selectedTripId === trip.id && isModal
+                        className={`bg-white rounded-xl p-4 md:p-6 border transition-colors cursor-pointer group
+                        ${selectedTripId === trip.id && isModal
                             ? 'border-rose-500 bg-rose-50'
                             : 'border-gray-100 hover:border-rose-200'}`}
                     >
-                        <div className="mb-4">
-                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors
-                                ${selectedTripId === trip.id && isModal
+                        <div className="mb-3 md:mb-4">
+                            <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center transition-colors
+                            ${selectedTripId === trip.id && isModal
                                 ? 'bg-rose-100'
                                 : 'bg-sky-50 group-hover:bg-sky-100'}`}
                             >
-                                <TreePalm className="w-6 h-6 text-green-600" />
+                                <TreePalm className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
                             </div>
                         </div>
-                        <div className="space-y-2">
-                            <h3 className="text-gray-900 font-medium">{trip.name}</h3>
-                            <div className="space-y-1">
-                                <div className="text-sm text-gray-500">
+                        <div className="space-y-1 md:space-y-2">
+                            <h3 className="text-sm md:text-base text-gray-900 font-medium">{trip.name}</h3>
+                            <div className="space-y-0.5 md:space-y-1">
+                                <div className="text-xs md:text-sm text-gray-500">
                                     <span className="font-medium">From:</span>{' '}
                                     {formatDate(trip.start_date)}
                                 </div>
-                                <div className="text-sm text-gray-500">
+                                <div className="text-xs md:text-sm text-gray-500">
                                     <span className="font-medium">To:</span>{' '}
                                     {formatDate(trip.end_date)}
                                 </div>

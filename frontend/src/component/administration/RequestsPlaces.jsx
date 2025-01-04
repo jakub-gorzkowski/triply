@@ -20,7 +20,7 @@ function RequestPlaces({ onEdit }) {
         try {
             const response = await axios.get(`${API_BASE_URL}/api/v1/place/unapproved`, {
                 headers: { 'Authorization': `Bearer ${auth.token}` },
-                params: { offset: currentPage, size: 10 }
+                params: { offset: currentPage, size: 5 }
             });
 
             const newPlaces = response.data.content;

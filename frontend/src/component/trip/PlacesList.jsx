@@ -25,7 +25,7 @@ function PlacesList({ tripId, refreshTrigger, onPlaceRemoved, onPlaceClick }) {
                 params: {
                     id: tripId,
                     offset: pageNumber,
-                    size: 10
+                    size: 5
                 },
                 headers: { 'Authorization': `Bearer ${auth.token}` }
             });
@@ -74,7 +74,7 @@ function PlacesList({ tripId, refreshTrigger, onPlaceRemoved, onPlaceClick }) {
                 setPlaces(prev => [...prev, ...newPlaces]);
             }
 
-            setHasMore(newPlaces.length === 10);
+            setHasMore(newPlaces.length === 5);
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to load places');
         } finally {

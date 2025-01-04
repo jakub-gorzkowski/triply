@@ -1,4 +1,4 @@
-import { X } from 'lucide-react';
+import { X, Pencil } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import axios from 'axios';
@@ -28,7 +28,7 @@ function TripHeader({ trip, onDelete, refreshTrigger, selectedPlaceId }) {
                     params: {
                         id: trip.id,
                         offset: 0,
-                        size: 10
+                        size: 5
                     },
                     headers: {
                         'Authorization': `Bearer ${auth.token}`
@@ -131,6 +131,11 @@ function TripHeader({ trip, onDelete, refreshTrigger, selectedPlaceId }) {
                     </div>
                 </div>
                 <div className="flex gap-2">
+                    <button
+                        className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 shadow-sm transition-colors"
+                    >
+                        <Pencil className="w-5 h-5" />
+                    </button>
                     <button
                         onClick={onDelete}
                         className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 shadow-sm transition-colors"
