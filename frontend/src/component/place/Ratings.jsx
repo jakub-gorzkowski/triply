@@ -45,14 +45,14 @@ function Ratings({ placeId }) {
 
     if (loading) {
         return (
-            <div className="w-80 bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div className="w-full md:w-80 bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500 mx-auto"/>
             </div>
         );
     }
 
     return (
-        <div className="w-80">
+        <div className="w-full md:w-80">
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                 <h3 className="text-xl font-bold text-gray-900 mb-6">Users ratings</h3>
                 <div className="space-y-3">

@@ -20,7 +20,7 @@ const Home = () => {
         <div className="flex min-h-screen bg-gray-50 overflow-hidden p-4 gap-4">
             <Sidebar currentPage='home'/>
             <div className="flex-1 relative overflow-x-hidden">
-                <div className="fixed top-0 left-0 w-full z-50 md:hidden bg-white shadow-lg">
+                <div className="fixed top-0 left-0 w-full z-50 md:hidden bg-white shadow-sm">
                     <div className="px-4 py-4">
                         <h1 className="text-2xl font-bold text-gray-900">Triply</h1>
                     </div>

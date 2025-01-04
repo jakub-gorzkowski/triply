@@ -112,7 +112,7 @@ function PlaceHeader({ place }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 hover:border-rose-200 transition-colors group overflow-hidden">
                     <div className="aspect-video w-full h-full">
                         {imageBlob ? (

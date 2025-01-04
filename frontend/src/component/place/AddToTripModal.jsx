@@ -49,8 +49,12 @@ const AddToTripModal = ({ isOpen, onClose, placeId }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl w-full max-w-3xl p-6 relative max-h-[90vh] flex flex-col">
+        <div className="fixed inset-0 bg-black bg-opacity-25 flex items-end md:items-center justify-center z-50">
+            <div className="bg-white rounded-t-xl md:rounded-xl w-full md:max-w-3xl p-4 md:p-6 relative flex flex-col">
+                <div className="md:hidden mb-4">
+                    <h1 className="text-2xl font-bold text-gray-900">Triply</h1>
+                </div>
+
                 <button
                     onClick={onClose}
                     className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
