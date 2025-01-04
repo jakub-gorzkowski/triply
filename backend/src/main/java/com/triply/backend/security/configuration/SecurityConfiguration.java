@@ -22,7 +22,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+        httpSecurity
+                .cors(cors -> cors.configure(httpSecurity))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(
                             HttpMethod.POST,
@@ -33,6 +35,7 @@ public class SecurityConfiguration {
                     // User endpoints
                     authorize.requestMatchers(HttpMethod.GET, "/data/uploads/**").authenticated();
 
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/**").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/latest").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/popular").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/place/reviews").authenticated();
@@ -47,6 +50,7 @@ public class SecurityConfiguration {
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/todo").authenticated();
                     authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/todo/toggle").authenticated();
 
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/**").authenticated();
                     authorize.requestMatchers(HttpMethod.POST, "/api/v1/trip/add").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/upcoming").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/trip/past").authenticated();

@@ -25,7 +25,9 @@ public class PlaceMapper {
 
     public static PlaceItem mapToItem(Place place) {
         return PlaceItem.builder()
+                .id(place.getId())
                 .name(place.getName())
+                .description(place.getDescription())
                 .imageUrl(place.getImageUrl())
                 .address(place.getAddress())
                 .category(place.getCategory().getName())
@@ -41,6 +43,8 @@ public class PlaceMapper {
                 .name(place.getName())
                 .address(place.getAddress())
                 .description(place.getDescription())
+                .latitude(place.getLatitude())
+                .longitude(place.getLongitude())
                 .category(place.getCategory().getName())
                 .imageUrl(place.getImageUrl())
                 .addedOn(place.getAddedOn())

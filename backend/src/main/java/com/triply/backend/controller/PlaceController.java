@@ -5,6 +5,8 @@ import com.triply.backend.domain.dto.item.ReviewItem;
 import com.triply.backend.domain.dto.request.PlaceRequest;
 import com.triply.backend.domain.dto.response.PlaceResponse;
 import com.triply.backend.domain.dto.response.RatingResponse;
+import com.triply.backend.domain.entity.Place;
+import com.triply.backend.domain.mapper.PlaceMapper;
 import com.triply.backend.service.place.PlaceService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +45,12 @@ public class PlaceController {
         PlaceRequest placeRequest = new PlaceRequest(name, address, description, categoryId, null);
         PlaceResponse addedPlace = placeService.addPlace(placeRequest, imageFile);
         return new ResponseEntity<>(addedPlace, HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<PlaceResponse> getPlaceById(@PathVariable(name = "id") Long id) {
+        Place place = placeService.getPlaceById(id);
+        return new ResponseEntity<>(PlaceMapper.mapToResponse(place), HttpStatus.OK);
     }
 
     @GetMapping(path = "/latest")

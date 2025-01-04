@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {Route, Routes} from "react-router-dom";
+import LoggedRoutes from "./component/route/LoggedRoutes";
+import PrivateRoutes from "./component/route/PrivateRoutes";
+import AdminRoutes from "./component/route/AdminRoutes";
+import Register from "./component/authentication/Register";
+import Login from "./component/authentication/Login";
+import Home from "./component/hub/Home";
+import Place from "./component/place/Place";
+import Trips from "./component/trips/Trips";
+import AccountSettings from "./component/settings/AccountSettings";
+import Trip from "./component/trip/Trip";
+import Places from "./component/places/Places";
+import Requests from "./component/administration/Requests";
 
 function App() {
-  const [count, setCount] = useState(0)
+    return (
+        <>
+            <Routes>
+                <Route element={<LoggedRoutes/>}>
+                    <Route path={'/register'} element={<Register/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
+                </Route>
+                <Route element={<PrivateRoutes/>}>
+                    <Route path={'/'} element={<Home/>}/>
+                    <Route path={'/trip/:id'} element={<Trip/>}/>
+                    <Route path={'/trips'} element={<Trips/>}/>
+                    <Route path={'/place/:id'} element={<Place/>}/>
+                    <Route path={'/places'} element={<Places/>}/>
+                    <Route path={'/settings'} element={<AccountSettings/>}/>
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+                    <Route element={<AdminRoutes/>}>
+                        <Route path={'/requests'} element={<Requests/>}/>
+                    </Route>
+                </Route>
+            </Routes>
+        </>
+    );
 }
 
-export default App
+export default App;

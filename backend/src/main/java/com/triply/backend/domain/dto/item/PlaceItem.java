@@ -17,9 +17,11 @@ import java.time.LocalDateTime;
 @Builder
 public class PlaceItem {
 
+    private Long id;
     @JsonProperty(value = "image_url")
     private String imageUrl;
     private String name;
+    private String description;
     private String address;
     private String category;
     private BigDecimal latitude;
