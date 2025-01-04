@@ -89,8 +89,12 @@ const CreatePlaceModal = ({ isOpen, onClose, onPlaceCreated }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl w-full max-w-md p-6 relative">
+        <div className="fixed inset-0 bg-black bg-opacity-25 flex items-end md:items-center justify-center z-50">
+            <div className="bg-white rounded-t-xl md:rounded-xl w-full md:max-w-md md:h-auto max-h-[85vh] p-4 md:p-6 relative flex flex-col">
+                <div className="md:hidden mb-4">
+                    <h1 className="text-2xl font-bold text-gray-900">Triply</h1>
+                </div>
+
                 <button
                     onClick={onClose}
                     className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
@@ -106,7 +110,7 @@ const CreatePlaceModal = ({ isOpen, onClose, onPlaceCreated }) => {
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4 overflow-y-auto">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                         <input
@@ -209,7 +213,7 @@ const CreatePlaceModal = ({ isOpen, onClose, onPlaceCreated }) => {
 
                     <button
                         type="submit"
-                        className="w-full bg-rose-600 text-white rounded-lg py-3 font-medium hover:bg-rose-700 transition-colors mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-rose-600 text-white rounded-lg py-3 font-medium hover:bg-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? 'Adding...' : 'Submit'}

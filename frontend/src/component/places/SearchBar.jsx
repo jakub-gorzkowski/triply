@@ -12,10 +12,10 @@ const CategoryDropdown = ({ selectedCategory, onSelect }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="relative">
+        <div className="relative w-full md:w-48">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-48 px-3 py-2 rounded-lg border border-gray-200 flex items-center justify-between bg-white hover:border-rose-300 transition-colors"
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 flex items-center justify-between bg-white hover:border-rose-300 transition-colors"
             >
                 <span className="text-gray-900">
                     {selectedCategory ? selectedCategory.name : 'Any'}
@@ -29,7 +29,7 @@ const CategoryDropdown = ({ selectedCategory, onSelect }) => {
                         className="fixed inset-0 z-10"
                         onClick={() => setIsOpen(false)}
                     />
-                    <div className="absolute mt-1 w-48 py-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                    <div className="absolute w-full mt-1 py-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
                         {categories.map(category => (
                             <button
                                 key={category.id ?? 'any'}
@@ -73,13 +73,13 @@ const SearchBar = ({ onSearch }) => {
     };
 
     return (
-        <div className="flex justify-center items-center">
-            <div className="flex items-center gap-3">
+        <div className="flex justify-center items-center w-full">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-3 w-full">
                 <CategoryDropdown
                     selectedCategory={selectedCategory}
                     onSelect={handleCategoryChange}
                 />
-                <div className="relative w-64">
+                <div className="relative w-full md:w-64">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <input
                         type="text"

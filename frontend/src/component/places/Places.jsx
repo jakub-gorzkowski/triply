@@ -64,16 +64,22 @@ const Places = () => {
     const showSearchResults = searchResults !== null;
 
     return (
-        <div className="flex min-h-screen p-4 bg-gray-50 gap-4">
+        <div className="flex min-h-screen bg-gray-50 overflow-hidden">
             <Sidebar currentPage="places" />
-            <div className="flex-1 px-4">
-                <div className="max-w-6xl mx-auto space-y-12 pt-12">
-                    <div className="flex justify-center items-center gap-4">
-                        <div className="flex items-center gap-3">
+            <div className="flex-1 w-full overflow-x-hidden">
+                <div className="fixed top-0 left-0 right-0 z-50 md:hidden bg-white shadow-sm">
+                    <div className="px-4 py-4">
+                        <h1 className="text-2xl font-bold text-gray-900">Triply</h1>
+                    </div>
+                </div>
+
+                <div className="max-w-6xl mx-auto px-4 pt-20 pb-24">
+                    <div className="flex justify-center items-center gap-4 overflow-x-auto">
+                        <div className="flex items-center gap-3 w-full">
                             <SearchBar onSearch={handleSearch} />
                             <button
                                 onClick={() => setIsModalOpen(true)}
-                                className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                                className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors flex-shrink-0"
                             >
                                 <Plus className="w-5 h-5" />
                             </button>
@@ -81,14 +87,14 @@ const Places = () => {
                     </div>
 
                     {showSearchResults ? (
-                        <section>
+                        <section className="mt-8">
                             <h2 className="text-xl font-bold text-gray-900 mb-6">Search Results</h2>
                             {searchError ? (
                                 <div className="p-4 bg-red-50 text-red-600 rounded-lg">
                                     {searchError}
                                 </div>
                             ) : (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
                                     {searchResults.map((place) => (
                                         <PlaceCard key={place.id} {...place} />
                                     ))}
@@ -96,7 +102,7 @@ const Places = () => {
                             )}
                         </section>
                     ) : (
-                        <div className="space-y-8">
+                        <div className="space-y-8 mt-8">
                             <section>
                                 <h2 className="text-xl font-bold text-gray-900 mb-6">Popular places</h2>
                                 <PlacesList type="popular" key={`popular-${refreshTrigger}`} />
