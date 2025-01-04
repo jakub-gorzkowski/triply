@@ -64,7 +64,7 @@ const Places = () => {
     const showSearchResults = searchResults !== null;
 
     return (
-        <div className="flex min-h-screen bg-gray-50 overflow-hidden">
+        <div className="flex min-h-screen bg-gray-50 overflow-hidden p-4 gap-4">
             <Sidebar currentPage="places" />
             <div className="flex-1 w-full overflow-x-hidden">
                 <div className="fixed top-0 left-0 right-0 z-50 md:hidden bg-white shadow-sm">
